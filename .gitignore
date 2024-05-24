@@ -4,4 +4,7 @@ data
 include
 util
 *.cfg
-*secret
+*.secret
+*.parquet
+*.DS_Store
+share

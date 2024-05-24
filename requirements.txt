@@ -1,3 +1,10 @@
 python-dotenv
 asynciolimiter
 spacetrack
+polars
+httpx
+tqdm
+seaborn
+fast-histogram
+colorcet
+datashader
