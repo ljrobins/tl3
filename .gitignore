@@ -1,0 +1,7 @@
+lib
+bin
+data
+include
+util
+*.cfg
+*secret
