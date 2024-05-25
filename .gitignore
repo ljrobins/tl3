@@ -8,3 +8,4 @@ util
 *.parquet
 *.DS_Store
 share
+docs/build

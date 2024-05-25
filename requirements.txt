@@ -8,3 +8,6 @@ seaborn
 fast-histogram
 colorcet
 datashader
+sphinx
+sphinx-gallery
+pydata-sphinx-theme

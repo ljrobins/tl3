@@ -10,7 +10,7 @@ import time
 import socket
 import httpx
 
-rate_limiter = Limiter(200/3600) # <300 requests / hour
+rate_limiter = Limiter(280/3600) # <300 requests / hour
 
 def internet(host="8.8.8.8", port=53, timeout=3):
     """
@@ -79,8 +79,8 @@ async def main():
 
     coros = []
 
-    start_day = dt.datetime(2024, 4, 20)
-    end_day = dt.datetime(2020, 1, 1)
+    start_day = dt.datetime(2021, 7, 4)
+    end_day = dt.datetime(2000, 1, 1)
     total_days = int((start_day - end_day).total_seconds() / 86400)
     dates = [start_day - dt.timedelta(days=deltat) for deltat in range(total_days)]
     for s,e in zip(dates[1:], dates[:-1]):
