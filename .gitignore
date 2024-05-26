@@ -9,3 +9,5 @@ util
 *.DS_Store
 share
 docs/build
+__pycache__
+*.db

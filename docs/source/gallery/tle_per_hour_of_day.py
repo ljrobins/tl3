@@ -1,8 +1,17 @@
-import polars as pl
+"""
+TLE Production Per Hour of the Day
+==================================
+
+Daily TLE production in UTC
+"""
+
+import twomillionlines as tm
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pl.read_parquet('database/db.parquet')
+df = tm.get_df()
+print(df)
 
 doy = df['EPOCH_DAY_OF_YEAR'].to_numpy()
 hour_of_day = 24 * (doy - np.floor(doy))

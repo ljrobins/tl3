@@ -1,0 +1,29 @@
+twomillionlines package
+=======================
+
+Submodules
+----------
+
+twomillionlines.database module
+-------------------------------
+
+.. automodule:: twomillionlines.database
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+twomillionlines.query module
+----------------------------
+
+.. automodule:: twomillionlines.query
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: twomillionlines
+   :members:
+   :undoc-members:
+   :show-inheritance:

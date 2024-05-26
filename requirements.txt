@@ -11,3 +11,5 @@ datashader
 sphinx
 sphinx-gallery
 pydata-sphinx-theme
+pyarrow
+pandas

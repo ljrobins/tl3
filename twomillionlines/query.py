@@ -4,15 +4,13 @@ import dotenv
 import os
 import datetime as dt
 from spacetrack import SpaceTrackClient
-import dotenv
-dotenv.load_dotenv('.env.secret')
 import time
 import socket
 import httpx
 
-rate_limiter = Limiter(280/3600) # <300 requests / hour
+rate_limiter = Limiter(290/3600) # <300 requests / hour
 
-def internet(host="8.8.8.8", port=53, timeout=3):
+def internet(host: str = "8.8.8.8", port: int = 53, timeout: int = 3):
     """
     Host: 8.8.8.8 (google-public-dns-a.google.com)
     OpenPort: 53/tcp
@@ -59,7 +57,7 @@ async def request(dt_start: dt.datetime, dt_end: dt.datetime, st: SpaceTrackClie
     while not success:
         try:
             await rate_limiter.wait() # Wait for a slot to be available.
-            print(f'Querying TLEs for {dt_start}...')    
+            print(f'Querying TLEs for {dt_start} -- {dt_end}...')    
             get_tles_between(st, [dt_start, dt_end])
             success = True
         except httpx.ConnectError:
@@ -71,21 +69,21 @@ async def request(dt_start: dt.datetime, dt_end: dt.datetime, st: SpaceTrackClie
             print("Read timeout... retrying this query")
 
 
-async def main():
-    dotenv.load_dotenv('.env.secret')
+async def _save_tles():
     httpx_client = httpx.Client(timeout=None)
     st = SpaceTrackClient(os.environ['SPACETRACK_USERNAME'], 
                             os.environ['SPACETRACK_PASSWORD'], httpx_client=httpx_client)
 
     coros = []
 
-    start_day = dt.datetime(2021, 7, 4)
-    end_day = dt.datetime(2000, 1, 1)
+    start_day = dt.datetime(1985, 10, 21)
+    end_day = dt.datetime(1958, 1, 1)
     total_days = int((start_day - end_day).total_seconds() / 86400)
-    dates = [start_day - dt.timedelta(days=deltat) for deltat in range(total_days)]
+    dates = [start_day - dt.timedelta(days=deltat) for deltat in range(0,total_days,30)]
     for s,e in zip(dates[1:], dates[:-1]):
         coros.append(request(s,e,st))
     await asyncio.gather(*coros)
 
 
-asyncio.run(main())
+def save_tles():
+    asyncio.run(_save_tles())

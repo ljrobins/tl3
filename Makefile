@@ -1,9 +1,9 @@
 .PHONY: all docs init build venv tle exec black pypi sphinx isort synthetic
 
 sphinx:
-	cd docs && sphinx-apidoc -o ./source ../mirage -f && make html
-	cp -R docs/build/html/ ../mirage-docs
-	touch ../mirage-docs/.nojekyll
+	cd docs && sphinx-apidoc -o ./source ../twomillionlines -f && make html
+	cp -R docs/build/html/ ../twomillionlines-docs
+	touch ../twomillionlines-docs/.nojekyll
 
 venv:
 	python3 -m venv . --upgrade-deps
