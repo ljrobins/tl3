@@ -21,7 +21,7 @@
 Inclination vs Eccentricity
 ===========================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-31
+.. GENERATED FROM PYTHON SOURCE LINES 5-30
 
 
 
@@ -51,7 +51,6 @@ Inclination vs Eccentricity
     import matplotlib.colors as colors
     import matplotlib.pyplot as plt
     from fast_histogram import histogram2d
-    import polars as pl
     import matplotlib.pyplot as plt
     import numpy as np
     import twomillionlines as tm
@@ -70,13 +69,13 @@ Inclination vs Eccentricity
     plt.imshow(h, norm=colors.LogNorm(vmin=1, vmax=h.max()), cmap=cmap, extent=extent)
     plt.gca().set_aspect('auto')
     plt.xlabel("Inclination [deg]")
-    plt.xlabel("Eccentricity")
+    plt.ylabel("Eccentricity")
     plt.colorbar()
     plt.show()
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 23.896 seconds)
+   **Total running time of the script:** (0 minutes 38.279 seconds)
 
 
 .. _sphx_glr_download_gallery_inc_vs_ecc.py:

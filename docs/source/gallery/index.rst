@@ -12,23 +12,6 @@ Analysis
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Daily TLE production in UTC">
-
-.. only:: html
-
-  .. image:: /gallery/images/thumb/sphx_glr_tle_per_hour_of_day_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_tle_per_hour_of_day.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">TLE Production Per Hour of the Day</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Plotting the number of TLEs produced every day since 1958">
 
 .. only:: html
@@ -41,6 +24,23 @@ Analysis
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">TLE Production Per Day</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Daily TLE production in UTC">
+
+.. only:: html
+
+  .. image:: /gallery/images/thumb/sphx_glr_tle_per_hour_of_day_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_tle_per_hour_of_day.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">TLE Production Per Hour of the Day</div>
     </div>
 
 
@@ -88,8 +88,8 @@ Analysis
 .. toctree::
    :hidden:
 
-   /gallery/tle_per_hour_of_day
    /gallery/tle_per_day
+   /gallery/tle_per_hour_of_day
    /gallery/tle_per_satnum
    /gallery/inc_vs_ecc
 

@@ -23,7 +23,7 @@ TLE Production Per Hour of the Day
 
 Daily TLE production in UTC
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-23
+.. GENERATED FROM PYTHON SOURCE LINES 7-24
 
 
 
@@ -33,35 +33,8 @@ Daily TLE production in UTC
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    shape: (195_283_233, 15)
-    ┌──────────────┬──────────┬────────────┬───────────────────┬───┬────────────┬────────────┬───────────┬─────────┐
-    │ NORAD_CAT_ID ┆ INTL_DES ┆ EPOCH_YEAR ┆ EPOCH_DAY_OF_YEAR ┆ … ┆ AOP        ┆ MA         ┆ N         ┆ REV_NUM │
-    │ ---          ┆ ---      ┆ ---        ┆ ---               ┆   ┆ ---        ┆ ---        ┆ ---       ┆ ---     │
-    │ i32          ┆ str      ┆ u16        ┆ f32               ┆   ┆ f32        ┆ f32        ┆ f32       ┆ i32     │
-    ╞══════════════╪══════════╪════════════╪═══════════════════╪═══╪════════════╪════════════╪═══════════╪═════════╡
-    │ 21922        ┆ 92017A   ┆ 2000       ┆ 84.543274         ┆ … ┆ 320.063995 ┆ 94.276398  ┆ 1.002726  ┆ 2917    │
-    │ 27133        ┆ 01049CD  ┆ 2017       ┆ 67.830948         ┆ … ┆ 223.888702 ┆ 135.874802 ┆ 14.6321   ┆ 81044   │
-    │ 18902        ┆ 81053MG  ┆ 2016       ┆ 197.907181        ┆ … ┆ 288.299408 ┆ 71.758202  ┆ 14.243934 ┆ 19009   │
-    │ 12702        ┆ 81053 AW ┆ 1990       ┆ 54.671566         ┆ … ┆ 82.495003  ┆ 279.469788 ┆ 14.371686 ┆ 44652   │
-    │ 17911        ┆ 87038  A ┆ 1989       ┆ 217.879654        ┆ … ┆ 100.919403 ┆ 259.496796 ┆ 14.753234 ┆ 12254   │
-    │ …            ┆ …        ┆ …          ┆ …                 ┆ … ┆ …          ┆ …          ┆ …         ┆ …       │
-    │ 40921        ┆ 15050B   ┆ 2019       ┆ 271.475494        ┆ … ┆ 336.451904 ┆ 23.589701  ┆ 12.428912 ┆ 18205   │
-    │ 4048         ┆ 69062B   ┆ 2014       ┆ 344.528351        ┆ … ┆ 226.024796 ┆ 159.677902 ┆ 14.306614 ┆ 36289   │
-    │ 19574        ┆ 88093B   ┆ 1998       ┆ 348.035217        ┆ … ┆ 27.093     ┆ 333.159088 ┆ 14.782831 ┆ 54856   │
-    │ 10455        ┆ 77105A   ┆ 2003       ┆ 89.269127         ┆ … ┆ 280.862701 ┆ 14.959     ┆ 2.005401  ┆ 18626   │
-    │ 20234        ┆ 89074C   ┆ 2005       ┆ 248.893936        ┆ … ┆ 247.697098 ┆ 112.381599 ┆ 12.624778 ┆ 73629   │
-    └──────────────┴──────────┴────────────┴───────────────────┴───┴────────────┴────────────┴───────────┴─────────┘
 
 
-
-
-
-
-|
 
 .. code-block:: Python
 
@@ -70,22 +43,23 @@ Daily TLE production in UTC
 
     import matplotlib.pyplot as plt
     import numpy as np
+    import polars as pl
 
     df = tm.get_df()
-    print(df)
-
-    doy = df['EPOCH_DAY_OF_YEAR'].to_numpy()
-    hour_of_day = 24 * (doy - np.floor(doy))
+    hour_of_day = df.select(pl.col('EPOCH').dt.hour() 
+                            + pl.col('EPOCH').dt.minute() / 60
+                            + pl.col('EPOCH').dt.second() / 3600)
 
     plt.hist(hour_of_day, bins=500)
     plt.xlabel("Hour of the day")
     plt.ylabel("TLEs Produced")
     plt.tight_layout()
+    plt.grid()
     plt.show()
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 21.942 seconds)
+   **Total running time of the script:** (0 minutes 48.018 seconds)
 
 
 .. _sphx_glr_download_gallery_tle_per_hour_of_day.py:

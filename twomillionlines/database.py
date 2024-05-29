@@ -78,4 +78,4 @@ def build_df(name):
     print(time.time()-t1)
 
 def get_df():
-    return pl.read_parquet(os.path.join(os.environ["TLE_DIR"], '..', 'database', 'db_all.parquet'))
+    return pl.read_parquet(os.path.join(os.environ["TLE_DIR"], '..', 'database', 'tles.parquet'))

@@ -28,6 +28,7 @@ for row in tqdm(df.iter_rows()):
 
 idx_cols = ["NORAD_CAT_ID", "EPOCH"]
 for idx_col in idx_cols:
+    print(f"Creating index on {idx_col}")
     cur.execute(f"CREATE INDEX idx_{idx_col.lower()} ON TLE({idx_col})")
 
 con.commit()

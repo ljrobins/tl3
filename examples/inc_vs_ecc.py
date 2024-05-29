@@ -7,7 +7,6 @@ import colorcet as cc
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 from fast_histogram import histogram2d
-import polars as pl
 import matplotlib.pyplot as plt
 import numpy as np
 import twomillionlines as tm

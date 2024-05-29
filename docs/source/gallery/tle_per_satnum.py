@@ -31,4 +31,5 @@ plt.show()
 
 plt.hist2d(nodes, counts, bins=250, cmap=cc.cm["fire"].copy())
 plt.tight_layout()
+plt.grid()
 plt.show()

@@ -7,7 +7,6 @@ import colorcet as cc
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 from fast_histogram import histogram2d
-import polars as pl
 import matplotlib.pyplot as plt
 import numpy as np
 import twomillionlines as tm
@@ -26,6 +25,6 @@ h = np.flipud(histogram2d(x, y, range=bounds, bins=365).T)
 plt.imshow(h, norm=colors.LogNorm(vmin=1, vmax=h.max()), cmap=cmap, extent=extent)
 plt.gca().set_aspect('auto')
 plt.xlabel("Inclination [deg]")
-plt.xlabel("Eccentricity")
+plt.ylabel("Eccentricity")
 plt.colorbar()
 plt.show()

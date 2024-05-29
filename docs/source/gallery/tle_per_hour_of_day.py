@@ -9,15 +9,16 @@ import twomillionlines as tm
 
 import matplotlib.pyplot as plt
 import numpy as np
+import polars as pl
 
 df = tm.get_df()
-print(df)
-
-doy = df['EPOCH_DAY_OF_YEAR'].to_numpy()
-hour_of_day = 24 * (doy - np.floor(doy))
+hour_of_day = df.select(pl.col('EPOCH').dt.hour() 
+                        + pl.col('EPOCH').dt.minute() / 60
+                        + pl.col('EPOCH').dt.second() / 3600)
 
 plt.hist(hour_of_day, bins=500)
 plt.xlabel("Hour of the day")
 plt.ylabel("TLEs Produced")
 plt.tight_layout()
+plt.grid()
 plt.show()

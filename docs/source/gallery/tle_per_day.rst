@@ -23,7 +23,7 @@ TLE Production Per Day
 
 Plotting the number of TLEs produced every day since 1958
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-23
+.. GENERATED FROM PYTHON SOURCE LINES 7-24
 
 
 
@@ -37,7 +37,7 @@ Plotting the number of TLEs produced every day since 1958
 
  .. code-block:: none
 
-    read time: 14.84 seconds
+    read time: 25.30 seconds
 
 
 
@@ -58,17 +58,18 @@ Plotting the number of TLEs produced every day since 1958
     df = tm.get_df()
     print(f"read time: {time.time()-t1:.2f} seconds")
 
-    x = df['EPOCH_DAY_OF_YEAR']/365 + df['EPOCH_YEAR']
+    x = df['EPOCH']
     del df
-    range_days = int((x.max() - x.min()) * 365)
+    range_days = int((x.max() - x.min()).total_seconds() / 86400)
     plt.hist(x, bins=range_days)
     plt.xlabel("Year")
     plt.ylabel("TLEs Per Day")
+    plt.grid()
     plt.show()
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 33.707 seconds)
+   **Total running time of the script:** (0 minutes 55.922 seconds)
 
 
 .. _sphx_glr_download_gallery_tle_per_day.py:
