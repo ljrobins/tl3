@@ -45,7 +45,7 @@ def get_tles_between(
     }
     tles = st.tle(**query)
     cat_name = f'{idstr}.txt'
-    save_fpath = os.path.join('data', cat_name)
+    save_fpath = os.path.join('data_st', cat_name)
 
     with open(save_fpath, 'a') as f:
         f.writelines('\n'.join(tles))
@@ -69,21 +69,20 @@ async def request(dt_start: dt.datetime, dt_end: dt.datetime, st: SpaceTrackClie
             print("Read timeout... retrying this query")
 
 
-async def _save_tles():
+async def _save_tles(dates: list[dt.datetime]):
     httpx_client = httpx.Client(timeout=None)
     st = SpaceTrackClient(os.environ['SPACETRACK_USERNAME'], 
                             os.environ['SPACETRACK_PASSWORD'], httpx_client=httpx_client)
 
     coros = []
-
-    start_day = dt.datetime(1985, 10, 21)
-    end_day = dt.datetime(1958, 1, 1)
-    total_days = int((start_day - end_day).total_seconds() / 86400)
-    dates = [start_day - dt.timedelta(days=deltat) for deltat in range(0,total_days,30)]
     for s,e in zip(dates[1:], dates[:-1]):
         coros.append(request(s,e,st))
     await asyncio.gather(*coros)
 
+def save_tles(dates: list[dt.datetime]):
+    """Dates increasing please thanks
 
-def save_tles():
-    asyncio.run(_save_tles())
+    :param dates: _description_
+    :type dates: list[dt.datetime]
+    """
+    asyncio.run(_save_tles(dates))

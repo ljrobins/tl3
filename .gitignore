@@ -1,6 +1,6 @@
 lib
 bin
-data
+data*/
 include
 util
 *.cfg

@@ -10,3 +10,4 @@ os.environ["TLE_DIR"] = os.path.dirname(
 
 from .query import *
 from .database import *
+from .scrape import *

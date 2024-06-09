@@ -13,3 +13,4 @@ sphinx-gallery
 pydata-sphinx-theme
 pyarrow
 pandas
+duckdb
