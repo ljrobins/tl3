@@ -23,7 +23,7 @@ def internet(host: str = "8.8.8.8", port: int = 53, timeout: int = 3):
     except socket.error:
         return False
 
-def get_tles_between(
+def query_tles_between(
     st: SpaceTrackClient,
     dtimes: list[dt.datetime],
 ) -> list[tuple[str, str]]:
@@ -58,7 +58,7 @@ async def request(dt_start: dt.datetime, dt_end: dt.datetime, st: SpaceTrackClie
         try:
             await rate_limiter.wait() # Wait for a slot to be available.
             print(f'Querying TLEs for {dt_start} -- {dt_end}...')    
-            get_tles_between(st, [dt_start, dt_end])
+            query_tles_between(st, [dt_start, dt_end])
             success = True
         except httpx.ConnectError:
             assert not internet()

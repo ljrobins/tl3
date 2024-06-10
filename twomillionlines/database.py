@@ -8,6 +8,8 @@ from typing import Tuple
 import numpy as np
 import difflib
 
+DT_REF = datetime.datetime(1958, 1, 1, tzinfo=datetime.timezone.utc)
+
 def print_str_differences(a: str, b: str) -> None:
     for i,s in enumerate(difflib.ndiff(a, b)):
         if s[0]==' ': 
@@ -82,6 +84,7 @@ def file_of_tles(f: str, src: str) -> pl.DataFrame:
                     year = int(f'20{l[18:20]}') if int(l[18:20]) < 50 else int(f'19{l[18:20]}')
                     days = float(l[20:32])
                     tle['EPOCH'] = datetime.datetime(year, 1, 1, tzinfo=datetime.timezone.utc) + datetime.timedelta(days=days-1)
+                    tle['DAY_NUMBER'] = (tle['EPOCH'] - DT_REF).days
                     tle['N_DOT'] = float(l[33:43]) # first derivative of the mean motion (ballistic coefficent)
                     tle['N_DDOT'] = implied_decimal_to_float(l[44:52]) # second derivative of the mean motion
                     tle['B_STAR'] = implied_decimal_to_float(l[53:61])
@@ -116,6 +119,7 @@ def file_of_tles(f: str, src: str) -> pl.DataFrame:
         df = df.cast({
                       "CHECKSUM1": pl.UInt8, 
                       "CHECKSUM2": pl.UInt8, 
+                      "DAY_NUMBER": pl.UInt16, 
                       "ELSET_NUM": pl.UInt16})
     df = df.with_columns(
         pl.lit(src).alias('SOURCE')
@@ -158,10 +162,10 @@ def build_df(name):
     lf = df.lazy()
     lf = lf.unique(subset=['EPOCH', 'N', 'ECC', 'INC', 'AOP', 'RAAN', 'MA'])
     
-    lf = lf.sort(['NORAD_CAT_ID', 'EPOCH'])
+    lf = lf.sort(['NORAD_CAT_ID', 'DAY_NUMBER'])
     lf.sink_parquet(f'database/{name}_by_norad.parquet', compression='lz4', row_group_size=int(2e5))
     
-    lf = lf.sort(['EPOCH', 'NORAD_CAT_ID'])
+    lf = lf.sort(['DAY_NUMBER', 'NORAD_CAT_ID'])
     lf.sink_parquet(f'database/{name}_by_date.parquet', compression='lz4', row_group_size=int(2e5))
 
     print(time.time()-t1)
