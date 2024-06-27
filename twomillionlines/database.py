@@ -4,9 +4,10 @@ from tqdm import tqdm
 import concurrent.futures
 import time
 import datetime
-from typing import Tuple
+from typing import Tuple, Union, List
 import numpy as np
 import difflib
+import duckdb
 
 DT_REF = datetime.datetime(1958, 1, 1, tzinfo=datetime.timezone.utc)
 
@@ -31,7 +32,7 @@ def float_to_implied_decimal_point(v: float) -> str:
     return f'{m}{p:+.0f}'
 
 def tle_to_l1(tle) -> str:
-    day_of_year = tle['EPOCH'].timetuple().tm_yday
+    day_of_year = f"{tle['EPOCH'].timetuple().tm_yday-1:03}"
     day_fraction = tle['EPOCH'].hour / 24 + tle['EPOCH'].minute / (24 * 60) + tle['EPOCH'].second / (24 * 3600) + tle['EPOCH'].microsecond / (24 * 3600 * 1e6)
     year_last_two = str(tle['EPOCH'].year)[2:]
     day_fraction_str = f'{day_fraction:.8f}'
@@ -126,15 +127,11 @@ def file_of_tles(f: str, src: str) -> pl.DataFrame:
     )
     return df.sort(['NORAD_CAT_ID', 'EPOCH'])
 
-def build_df(name):
+def build_df(name, look_dir: str):
     executor = concurrent.futures.ProcessPoolExecutor(8)
 
     dirs = [
-            # ('data_pl', 'P'),
-            ('data_st', 'N'),
-            # ('data_45', 'J'), 
-            # ('data_bg', 'B'), 
-            # ('data_bg/old_tles', 'B'),
+            (look_dir, 'N'),
             ]
 
     t1 = time.time()
@@ -162,10 +159,56 @@ def build_df(name):
     lf = df.lazy()
     lf = lf.unique(subset=['EPOCH', 'N', 'ECC', 'INC', 'AOP', 'RAAN', 'MA'])
     
-    lf = lf.sort(['NORAD_CAT_ID', 'DAY_NUMBER'])
-    lf.sink_parquet(f'database/{name}_by_norad.parquet', compression='lz4', row_group_size=int(2e5))
+    # lf = lf.sort(['NORAD_CAT_ID', 'DAY_NUMBER'])
+    # lf.sink_parquet(f'database/{name}_by_norad.parquet', compression='lz4', row_group_size=int(2e5))
     
     lf = lf.sort(['DAY_NUMBER', 'NORAD_CAT_ID'])
     lf.sink_parquet(f'database/{name}_by_date.parquet', compression='lz4', row_group_size=int(2e5))
 
     print(time.time()-t1)
+
+def tles_between(date_start: datetime.datetime, 
+                     date_end: datetime.datetime, 
+                     norad_cat_id: Union[int, str] = 'all',
+                     cols: List[str] = '*',
+                     return_as: str = 'polars'):
+    assert return_as.lower() in ['polars', 'tle', 'duck'], "return_as must be 'polars', 'duck', or 'tle'"
+    assert date_end > date_start, "date_start must be before date_end"
+    norad_cat_id = str(norad_cat_id)
+    if norad_cat_id.lower() != 'all':
+        assert int(norad_cat_id) < 1e5, "norad_cat_id must be < 100_000"
+    
+    idstr, fdstr = date_start.strftime("%Y-%m-%d"), date_end.strftime("%Y-%m-%d")
+    constraints = []
+    constraints.append(f'EPOCH BETWEEN {repr(idstr)} AND {repr(fdstr)}')
+    if norad_cat_id.lower() != 'all' and norad_cat_id.isdigit():
+        constraints.append(f'NORAD_CAT_ID=={norad_cat_id}')
+    
+    db = os.path.join(os.environ['TLE_DIR'], '..', 'database', 'noice_by_date.parquet')
+    
+    if isinstance(cols, list):
+        col_repr = ', '.join(cols)
+    elif isinstance(cols, str):
+        col_repr = cols
+    else:
+        raise NotImplementedError("cols must be of type list or str")
+
+    query_str = f"""
+        SELECT {col_repr}
+        FROM {repr(db)}
+        {'WHERE ' + ' AND '.join(constraints)}
+        ORDER BY EPOCH ASC;
+        """
+    x = duckdb.sql(query_str)
+
+    if return_as.lower() == 'polars':
+        return x.pl()
+    elif return_as.lower() == 'tle':
+        x = x.pl()
+        l1s = np.zeros(x.height, dtype='<U69')
+        l2s = np.zeros(x.height, dtype='<U69')
+        for i,row in enumerate(x.iter_rows(named=True)):
+            l1s[i], l2s[i] = df_row_to_tle(row)
+        return np.vstack((l1s, l2s)).T
+    else:
+        return x

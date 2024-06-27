@@ -7,7 +7,7 @@ import os
 if __name__ == "__main__":
     now = datetime.datetime.now()
     today = datetime.datetime(now.year, now.month, now.day)
-    diri = 'data_st'
+    diri = '/Volumes/Data 1/tles'
     files = [x for x in os.listdir(diri) if os.path.getsize(os.path.join(diri, x))]
     files = sorted(files, key=lambda x: datetime.datetime.strptime(x, '%Y-%m-%d.txt'))
 
@@ -21,5 +21,5 @@ if __name__ == "__main__":
             break
         days_back += 1
 
-    tm.save_tles(list(reversed(dates)))
-    tm.build_df("tles")
+    tm.save_tles(list(reversed(dates)), save_dir=diri)
+    tm.build_df("tles", diri)

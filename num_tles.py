@@ -1,6 +1,6 @@
 import duckdb
 
 
-n = duckdb.sql("SELECT COUNT(*) FROM 'database/tles_by_date.parquet'")
+n = duckdb.sql("SELECT COUNT(*) FROM 'database/noice_by_date.parquet'")
 
 print(n)
