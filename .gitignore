@@ -8,6 +8,9 @@ util
 *.parquet
 *.DS_Store
 share
-docs/build
 __pycache__
 *.db
+.tmp
+.lock
+etc
+tl3/txt

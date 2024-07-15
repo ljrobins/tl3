@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "tl3"
+version = "0.0.1"
+description = "Two-line element (TLE) management with a focus on downloading and operating on every TLE ever published by Space-Track"
+authors = ["Liam Robinson <robin502@purdue.edu>"]
+readme = "README.rst"
+packages = [{ include = "tl3" }]
+documentation = "https://ljrobins.github.io/tl3/docs/build/tl3.html"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: MacOS, Windows, Linux",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+python-dotenv = ">=0.0.1"
+asynciolimiter = ">=0.0.1"
+spacetrack = ">=0.0.1"
+polars = ">=0.0.1"
+httpx = ">=0.0.1"
+duckdb = ">=0.0.1"
+
+[tool.poetry.urls]
+"Homepage" = "https://github.com/ljrobins/mirage"
+"Bug Tracker" = "https://github.com/ljrobins/mirage/issues"
+"Documentation" = "https://ljrobins.github.io/mirage-docs"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+# 1. Enable flake8-bugbear (`B`) rules, in addition to the defaults.
+select = ["E4", "E7", "E9", "F", "B"]
+# 2. Avoid enforcing line-length violations (`E501`)
+ignore = ["E501",
+        "E731", # allowing lambda assignments
+        "B019" # allowing functools.lru_cache
+        ]
+# 3. Avoid trying to fix flake8-bugbear (`B`) violations.
+unfixable = ["B"]
+# 4. Ignore `E402` (import violations) in all `__init__.py` files, and in select subdirectories.
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F403"]
+"mirage/tests/*" = [
+    "F841" # allows assigned but never used in tests
+    ]
+"mirage/lighting.py" = [
+    "E741" # allows short variable names like L O N
+    ]
+
+[tool.ruff.format]
+# 5. Use single quotes for non-triple-quoted strings.
+quote-style = "single"
