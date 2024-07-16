@@ -5,7 +5,8 @@ description = "Two-line element (TLE) management with a focus on downloading and
 authors = ["Liam Robinson <robin502@purdue.edu>"]
 readme = "README.rst"
 packages = [{ include = "tl3" }]
-documentation = "https://ljrobins.github.io/tl3/docs/build/tl3.html"
+documentation = "https://ljrobins.github.io/tl3"
+homepage = "https://github.com/ljrobins/tl3"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Intended Audience :: Developers",
