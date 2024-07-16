@@ -8,7 +8,9 @@ packages = [{ include = "tl3" }]
 documentation = "https://ljrobins.github.io/tl3/docs/build/tl3.html"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Operating System :: MacOS, Windows, Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Linux",
+    "Operating System :: Windows",
 ]
 
 [tool.poetry.dependencies]
