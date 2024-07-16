@@ -10,10 +10,10 @@ from datetime import date
 import sys
 import os
 
-project = 'TL3'
+project = 'tl3'
 copyright = f'2024-{date.today().year}, Liam Robinson'
 author = 'Liam Robinson'
-version = '0.0.3'
+version = '0.0.5'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

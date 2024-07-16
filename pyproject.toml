@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tl3"
-version = "0.0.4"
+version = "0.0.5"
 description = "Two-line element (TLE) management with a focus on downloading and operating on every TLE ever published by Space-Track"
 authors = ["Liam Robinson <robin502@purdue.edu>"]
 readme = "README.rst"
