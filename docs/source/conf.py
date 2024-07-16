@@ -7,6 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 from datetime import date
+import sys
+import os
 
 project = 'TL3'
 copyright = f'2024-{date.today().year}, Liam Robinson'
@@ -21,7 +23,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx_gallery.gen_gallery',
     'sphinx_copybutton',
-    "sphinx.ext.viewcode",
+    'sphinx.ext.viewcode',
 ]
 templates_path = ['_templates']
 html_css_files = [
@@ -51,7 +53,4 @@ sphinx_gallery_conf = {
 }
 
 # Doing things I probably shouldn't here
-import sys
-import os
-
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..')))

@@ -10,7 +10,6 @@ import httpx
 from dotenv import load_dotenv
 from itertools import pairwise
 import ssl
-import os
 import shutil
 import gzip
 import urllib.request
@@ -87,10 +86,12 @@ async def _request(
     idstr, fdstr = dt_start.strftime('%Y-%m-%d'), dt_end.strftime('%Y-%m-%d')
     save_path = os.path.join(save_dir, f'{idstr} {fdstr}.txt')
 
-    for d1, d2 in get_tle_file_list_as_dates(save_dir):
+    dates = get_tle_file_list_as_dates(save_dir)
+    files = get_tle_file_list(save_dir)
+    for f, (d1, d2) in zip(files, dates):
         if d1 <= dt_start and d2 >= dt_end and skip_existing:
             print(
-                f'TLEs from {dt_start} -- {dt_end} already covered by {repr(file)}, skipping...'
+                f'TLEs from {dt_start} -- {dt_end} already covered by {repr(f)}, skipping...'
             )
             return
 
@@ -180,8 +181,7 @@ def _load_secrets():
 
 
 def delete_credentials_cache():
-    """Deletes the local Space-Track credentials cache. Use only if you want to re-input the username and password for whatever reason.
-    """
+    """Deletes the local Space-Track credentials cache. Use only if you want to re-input the username and password for whatever reason."""
     if (
         input(
             f"Are you sure you want to remove {os.environ['TL3_SECRETS_CACHE']}? (y/n)"
@@ -319,6 +319,7 @@ def fill_tle_gaps(tle_dir: str = None, **kwargs) -> None:
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
     dates = _get_tle_gaps(tle_dir)
     save_tles(dates, save_dir=tle_dir, **kwargs)
+
 
 def _save_file_from_url(url: str, directory: str, save_name: str = None):
     print(f'Saving {url} to {directory}...')

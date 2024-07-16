@@ -80,7 +80,7 @@ Inclination vs Eccentricity
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.951 seconds)
+   **Total running time of the script:** (0 minutes 5.152 seconds)
 
 
 .. _sphx_glr_download_gallery_inc_vs_ecc.py:

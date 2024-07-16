@@ -169,7 +169,8 @@ def tles_between(
     date_end: datetime.datetime,
     norad_cat_id: Union[int, str] = 'all',
     cols: Union[List[str], str] = '*',
-    return_as: str = 'polars') -> Union[pl.DataFrame, duckdb.duckdb.DuckDBPyRelation, np.ndarray]:
+    return_as: str = 'polars',
+) -> Union[pl.DataFrame, duckdb.duckdb.DuckDBPyRelation, np.ndarray]:
     """
 
     :param date_start: Start datetime for the query, in UTC
@@ -183,7 +184,7 @@ def tles_between(
     :param return_as: Format to return results as. "duck" returns the raw duckdb query result, "polars" returns a polars DataFrame, and "tle" returns a numpy string [nx2] array, defaults to "polars"
     :type return_as: string, optional
     """
-    
+
     assert return_as.lower() in [
         'polars',
         'tle',

@@ -61,7 +61,7 @@ Plotting the number of TLEs produced every day since 1958
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 21.849 seconds)
+   **Total running time of the script:** (0 minutes 21.595 seconds)
 
 
 .. _sphx_glr_download_gallery_tle_per_day.py:

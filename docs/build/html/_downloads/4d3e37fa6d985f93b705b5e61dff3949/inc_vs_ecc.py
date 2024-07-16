@@ -10,7 +10,6 @@ from fast_histogram import histogram2d
 import numpy as np
 import tl3
 import duckdb
-import os
 
 
 x = (

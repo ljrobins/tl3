@@ -66,7 +66,7 @@ Daily TLE production in UTC
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 21.120 seconds)
+   **Total running time of the script:** (0 minutes 20.988 seconds)
 
 
 .. _sphx_glr_download_gallery_tle_per_hour_of_day.py:

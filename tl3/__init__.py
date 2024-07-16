@@ -27,4 +27,5 @@ from .query import *
 from .database import *
 
 from .query import _load_secrets
+
 _load_secrets()

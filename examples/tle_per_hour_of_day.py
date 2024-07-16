@@ -7,7 +7,6 @@ Daily TLE production in UTC
 
 import tl3
 import duckdb
-import os
 
 import matplotlib.pyplot as plt
 import polars as pl

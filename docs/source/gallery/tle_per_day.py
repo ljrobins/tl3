@@ -8,9 +8,7 @@ Plotting the number of TLEs produced every day since 1958
 import tl3
 
 import matplotlib.pyplot as plt
-import time
 import duckdb
-import os
 
 x = duckdb.sql(f"""
     SELECT EPOCH FROM {repr(tl3.DB_PATH)}

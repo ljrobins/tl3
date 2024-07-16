@@ -413,10 +413,12 @@ document.write(`
     <span class="n">idstr</span><span class="p">,</span> <span class="n">fdstr</span> <span class="o">=</span> <span class="n">dt_start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">dt_end</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">idstr</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">fdstr</span><span class="si">}</span><span class="s1">.txt&#39;</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="ow">in</span> <span class="n">get_tle_file_list_as_dates</span><span class="p">(</span><span class="n">save_dir</span><span class="p">):</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">get_tle_file_list_as_dates</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">get_tle_file_list</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">dates</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">d1</span> <span class="o">&lt;=</span> <span class="n">dt_start</span> <span class="ow">and</span> <span class="n">d2</span> <span class="o">&gt;=</span> <span class="n">dt_end</span> <span class="ow">and</span> <span class="n">skip_existing</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;TLEs from </span><span class="si">{</span><span class="n">dt_start</span><span class="si">}</span><span class="s1"> -- </span><span class="si">{</span><span class="n">dt_end</span><span class="si">}</span><span class="s1"> already covered by </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="si">}</span><span class="s1">, skipping...&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;TLEs from </span><span class="si">{</span><span class="n">dt_start</span><span class="si">}</span><span class="s1"> -- </span><span class="si">{</span><span class="n">dt_end</span><span class="si">}</span><span class="s1"> already covered by </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="si">}</span><span class="s1">, skipping...&#39;</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
@@ -452,7 +454,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="save_tles">
-<a class="viewcode-back" href="../../tl3.html#tl3.query.save_tles">[docs]</a>
+<a class="viewcode-back" href="../../tl3.query.html#tl3.query.save_tles">[docs]</a>
 <span class="k">def</span> <span class="nf">save_tles</span><span class="p">(</span>
     <span class="n">dates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">]],</span>
     <span class="n">save_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -509,7 +511,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="delete_credentials_cache">
-<a class="viewcode-back" href="../../tl3.html#tl3.query.delete_credentials_cache">[docs]</a>
+<a class="viewcode-back" href="../../tl3.query.html#tl3.query.delete_credentials_cache">[docs]</a>
 <span class="k">def</span> <span class="nf">delete_credentials_cache</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Deletes the local Space-Track credentials cache. Use only if you want to re-input the username and password for whatever reason.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -524,7 +526,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="load_query_dates">
-<a class="viewcode-back" href="../../tl3.html#tl3.query.load_query_dates">[docs]</a>
+<a class="viewcode-back" href="../../tl3.query.html#tl3.query.load_query_dates">[docs]</a>
 <span class="k">def</span> <span class="nf">load_query_dates</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Loads the historical TLE query dates. Note that these are distributed such that each resulting .txt file is about 20 MB (~150k TLEs)</span>
 
@@ -545,7 +547,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="get_tle_file_list">
-<a class="viewcode-back" href="../../tl3.html#tl3.query.get_tle_file_list">[docs]</a>
+<a class="viewcode-back" href="../../tl3.query.html#tl3.query.get_tle_file_list">[docs]</a>
 <span class="k">def</span> <span class="nf">get_tle_file_list</span><span class="p">(</span><span class="n">tle_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of the .txt files in a directory</span>
 
@@ -572,7 +574,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="get_tle_file_list_as_dates">
-<a class="viewcode-back" href="../../tl3.html#tl3.query.get_tle_file_list_as_dates">[docs]</a>
+<a class="viewcode-back" href="../../tl3.query.html#tl3.query.get_tle_file_list_as_dates">[docs]</a>
 <span class="k">def</span> <span class="nf">get_tle_file_list_as_dates</span><span class="p">(</span>
     <span class="n">tle_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">]]:</span>
@@ -597,7 +599,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="update_tle_cache">
-<a class="viewcode-back" href="../../tl3.html#tl3.query.update_tle_cache">[docs]</a>
+<a class="viewcode-back" href="../../tl3.query.html#tl3.query.update_tle_cache">[docs]</a>
 <span class="k">def</span> <span class="nf">update_tle_cache</span><span class="p">(</span><span class="n">tle_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Updates the cache with any new TLEs up to the beginning of the last UTC day</span>
 
@@ -655,7 +657,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="fill_tle_gaps">
-<a class="viewcode-back" href="../../tl3.html#tl3.query.fill_tle_gaps">[docs]</a>
+<a class="viewcode-back" href="../../tl3.query.html#tl3.query.fill_tle_gaps">[docs]</a>
 <span class="k">def</span> <span class="nf">fill_tle_gaps</span><span class="p">(</span><span class="n">tle_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Looks for and fills individual days without TLEs in the text cache</span>
 
