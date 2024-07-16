@@ -1,6 +1,6 @@
 import datetime
 import time
-import twomillionlines as tm
+import tl3 as tm
 import urllib
 
 save_dir = 'data_pl'
@@ -12,7 +12,7 @@ for days_back in range(3000):
     date = datetime.datetime(2023, 4, 21) - datetime.timedelta(days=days_back)
 
     try:
-        tm.save_file_from_url(url(date), save_dir)
+        tm._save_file_from_url(url(date), save_dir)
     except urllib.error.HTTPError as e:
         if e.status == 403:
             print('Access forbidden, continuing to next day')

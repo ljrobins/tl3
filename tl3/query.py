@@ -9,13 +9,18 @@ import socket
 import httpx
 from dotenv import load_dotenv
 from itertools import pairwise
+import ssl
+import os
+import shutil
+import gzip
+import urllib.request
 
 rate_limiter = Limiter(
     290 / 3600
 )  # < 300 requests / hour to not make space-track upset
 
 
-def get_spacetrack_client(username=None, password=None) -> SpaceTrackClient:
+def _get_spacetrack_client(username=None, password=None) -> SpaceTrackClient:
     return SpaceTrackClient(
         os.environ['SPACETRACK_USERNAME'] if username is None else username,
         os.environ['SPACETRACK_PASSWORD'] if password is None else password,
@@ -23,7 +28,7 @@ def get_spacetrack_client(username=None, password=None) -> SpaceTrackClient:
     )
 
 
-def internet(host: str = '8.8.8.8', port: int = 53, timeout: int = 3):
+def _internet(host: str = '8.8.8.8', port: int = 53, timeout: int = 3):
     """
     Host: 8.8.8.8 (google-public-dns-a.google.com)
     OpenPort: 53/tcp
@@ -37,21 +42,23 @@ def internet(host: str = '8.8.8.8', port: int = 53, timeout: int = 3):
         return False
 
 
-def query_tles_between(
+def _query_tles_between(
     st: SpaceTrackClient,
-    dtimes: list[datetime.date],
+    dates: list[datetime.date],
     save_path: str = None,
     endpoint: str = 'tle',
 ) -> list[tuple[str, str]]:
     """Gets all TLEs published in the range of datetimes passed
 
-    :param dtimes: Datetimes, assumed to be UTC, in chronologically ascending order
-    :type dtimes: np.ndarray[datetime]
+    :param st: SpaceTrackClient class instance to make the query
+    :type st: SpaceTrackClient
+    :param dates: Datetimes, assumed to be UTC, in chronologically ascending order
+    :type dates: np.ndarray[datetime]
     :raises ValueError: If the object decays during the timespan
     :return: List of TLE lines 1 and 2
     :rtype: list[tuple[str, str]]
     """
-    idtime, fdtime = dtimes[0], dtimes[-1]
+    idtime, fdtime = dates[0], dates[-1]
     idstr, fdstr = idtime.strftime('%Y-%m-%d'), fdtime.strftime('%Y-%m-%d')
 
     query = {
@@ -69,7 +76,7 @@ def query_tles_between(
     return tles
 
 
-async def request(
+async def _request(
     dt_start: datetime.date,
     dt_end: datetime.date,
     st: SpaceTrackClient,
@@ -92,14 +99,14 @@ async def request(
         try:
             await rate_limiter.wait()  # Wait for a slot to be available.
             print(f'Querying TLEs for {dt_start} -- {dt_end}...')
-            query_tles_between(
+            _query_tles_between(
                 st, [dt_start, dt_end], save_path=save_path, endpoint=endpoint
             )
             print('Done! Waiting due to the rate limit...')
             success = True
         except httpx.ConnectError:
-            assert not internet()
-            while not internet():
+            assert not _internet()
+            while not _internet():
                 print('No internet! waiting for connection...')
                 time.sleep(10)
         except httpx.ReadTimeout:
@@ -107,14 +114,14 @@ async def request(
 
 
 async def _save_tles(dates: list[tuple[datetime.date, datetime.date]], **kwargs):
-    st = get_spacetrack_client()
+    st = _get_spacetrack_client()
 
     coros = []
     for s, e in dates:
         assert (
             e > s
         ), 'Starting datetimes (dates[i][0]) must be before ending datetimes (dates[i][1])'
-        coros.append(request(s, e, st, **kwargs))
+        coros.append(_request(s, e, st, **kwargs))
     await asyncio.gather(*coros)
 
 
@@ -145,7 +152,7 @@ def save_tles(
     asyncio.run(_save_tles(dates, **kwargs))
 
 
-def load_secrets():
+def _load_secrets():
     if os.path.exists(os.environ['TL3_SECRETS_CACHE']):
         load_dotenv(os.environ['TL3_SECRETS_CACHE'])
     else:
@@ -156,7 +163,7 @@ def load_secrets():
 
         while not success:
             try:
-                st = get_spacetrack_client(username, password)
+                st = _get_spacetrack_client(username, password)
                 st.tle_latest(norad_cat_id=25544, ordinal=1, format='tle')
                 success = True
             except (httpx.HTTPStatusError, AuthenticationError) as e:
@@ -173,6 +180,8 @@ def load_secrets():
 
 
 def delete_credentials_cache():
+    """Deletes the local Space-Track credentials cache. Use only if you want to re-input the username and password for whatever reason.
+    """
     if (
         input(
             f"Are you sure you want to remove {os.environ['TL3_SECRETS_CACHE']}? (y/n)"
@@ -201,6 +210,13 @@ def load_query_dates() -> list[tuple[datetime.date, datetime.date]]:
 
 
 def get_tle_file_list(tle_dir: str = None) -> list[str]:
+    """Returns a list of the .txt files in a directory
+
+    :param tle_dir: Directory to search for TLEs, defaults to None (uses the default internal location ./txt/)
+    :type tle_dir: str, optional
+    :return: List of absolute file paths, sorted by increasing date
+    :rtype: list[str]
+    """
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
     files = [
         x
@@ -220,6 +236,13 @@ def get_tle_file_list(tle_dir: str = None) -> list[str]:
 def get_tle_file_list_as_dates(
     tle_dir: str = None,
 ) -> list[tuple[datetime.date, datetime.date]]:
+    """Lists the contents of the TLE directory as a list of tuples of date limits for each file
+
+    :param tle_dir: Directory to search for TLEs, defaults to None (uses the default internal location ./txt/)
+    :type tle_dir: str, optional
+    :return: List of beginning and ending date tuples for each file, sorted by increasing date
+    :rtype: list[tuple[datetime.date, datetime.date]]
+    """
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
 
     files = get_tle_file_list(tle_dir)
@@ -266,7 +289,7 @@ def update_tle_cache(tle_dir: str = None) -> None:
         print('TLE cache is up to date!')
 
 
-def date_pairs_between(
+def _date_pairs_between(
     date_start: datetime.date, date_end: datetime.date
 ) -> list[tuple[datetime.date, datetime.date]]:
     dates = []
@@ -278,16 +301,63 @@ def date_pairs_between(
     return list(pairwise(dates))
 
 
-def get_tle_gaps(tle_dir: str) -> list[tuple[datetime.date, datetime.date]]:
+def _get_tle_gaps(tle_dir: str) -> list[tuple[datetime.date, datetime.date]]:
     files = get_tle_file_list_as_dates(tle_dir)
     date_gaps = []
     for f1, f2 in pairwise(files):
         if f1[1] != f2[0]:
-            date_gaps.extend(date_pairs_between(f1[1], f2[0]))
+            date_gaps.extend(_date_pairs_between(f1[1], f2[0]))
     return date_gaps
 
 
 def fill_tle_gaps(tle_dir: str = None, **kwargs) -> None:
+    """Looks for and fills individual days without TLEs in the text cache
+
+    :param tle_dir: Directory to search, defaults to None (if None, uses the default internal location ./txt/)
+    :type tle_dir: str, optional
+    """
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
-    dates = get_tle_gaps(tle_dir)
+    dates = _get_tle_gaps(tle_dir)
     save_tles(dates, save_dir=tle_dir, **kwargs)
+
+def _save_file_from_url(url: str, directory: str, save_name: str = None):
+    print(f'Saving {url} to {directory}...')
+
+    if save_name is None:
+        file_path = os.path.join(directory, url.split('/')[-1])
+    else:
+        file_path = os.path.join(directory, save_name)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    # Create an SSL context that does not verify certificates
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+
+    # Pretend to be Safari on Mac
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15'
+    }
+
+    # Open the URL with custom headers
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req, context=context) as response, open(
+        file_path, 'wb'
+    ) as out_file:
+        # Get total file size
+        file_size = int(response.getheader('Content-Length', 0))
+        print(f'Found a file with size {file_size}')
+
+        while True:
+            buffer = response.read(1024)
+            if not buffer:
+                break
+            out_file.write(buffer)
+
+    if file_path.endswith('.gz'):
+        with gzip.open(file_path, 'rb') as f:
+            file_content = f.read()
+        with open(file_path, 'wb') as f:
+            f.write(file_content)
+        shutil.move(file_path, file_path[:-3])

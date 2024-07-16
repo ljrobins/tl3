@@ -8,7 +8,7 @@
 
 from datetime import date
 
-project = 'Spacetrap'
+project = 'TL3'
 copyright = f'2024-{date.today().year}, Liam Robinson'
 author = 'Liam Robinson'
 version = '0.0.1'
@@ -20,6 +20,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx_gallery.gen_gallery',
+    'sphinx_copybutton',
+    "sphinx.ext.viewcode",
 ]
 templates_path = ['_templates']
 html_css_files = [

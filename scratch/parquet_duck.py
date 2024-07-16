@@ -1,6 +1,6 @@
 import duckdb
 import time
-import twomillionlines as tm
+import tl3 as tm
 import datetime
 
 # dummy for warm start

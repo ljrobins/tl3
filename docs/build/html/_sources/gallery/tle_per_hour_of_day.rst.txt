@@ -23,7 +23,7 @@ TLE Production Per Hour of the Day
 
 Daily TLE production in UTC
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-24
+.. GENERATED FROM PYTHON SOURCE LINES 7-31
 
 
 
@@ -39,27 +39,34 @@ Daily TLE production in UTC
 .. code-block:: Python
 
 
-    import twomillionlines as tm
+    import tl3
+    import duckdb
+    import os
 
     import matplotlib.pyplot as plt
-    import numpy as np
     import polars as pl
 
-    df = tm.get_df()
-    hour_of_day = df.select(pl.col('EPOCH').dt.hour() 
-                            + pl.col('EPOCH').dt.minute() / 60
-                            + pl.col('EPOCH').dt.second() / 3600)
+    df = duckdb.sql(f"""
+        SELECT EPOCH FROM {repr(tl3.DB_PATH)}
+    """).pl()
+
+    hour_of_day = df.select(
+        pl.col('EPOCH').dt.hour()
+        + pl.col('EPOCH').dt.minute() / 60
+        + pl.col('EPOCH').dt.second() / 3600
+    )
 
     plt.hist(hour_of_day, bins=500)
-    plt.xlabel("Hour of the day")
-    plt.ylabel("TLEs Produced")
+    plt.xlabel('Hour of the day')
+    plt.ylabel('TLEs Produced')
     plt.tight_layout()
     plt.grid()
     plt.show()
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 48.018 seconds)
+   **Total running time of the script:** (0 minutes 21.120 seconds)
 
 
 .. _sphx_glr_download_gallery_tle_per_hour_of_day.py:

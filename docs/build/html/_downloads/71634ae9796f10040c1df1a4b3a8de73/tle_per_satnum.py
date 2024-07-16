@@ -5,7 +5,7 @@ TLE Production Per Satnum
 Plotting TLE production as a function of satnum
 """
 
-import twomillionlines as tm
+import tl3 as tm
 
 import matplotlib.pyplot as plt
 import numpy as np

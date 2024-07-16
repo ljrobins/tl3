@@ -21,7 +21,7 @@
 Inclination vs Eccentricity
 ===========================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-30
+.. GENERATED FROM PYTHON SOURCE LINES 5-45
 
 
 
@@ -31,18 +31,8 @@ Inclination vs Eccentricity
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    [[0.0, 179.5581], [0.0, 0.9884983]]
 
 
-
-
-
-
-|
 
 .. code-block:: Python
 
@@ -51,31 +41,46 @@ Inclination vs Eccentricity
     import matplotlib.colors as colors
     import matplotlib.pyplot as plt
     from fast_histogram import histogram2d
-    import matplotlib.pyplot as plt
     import numpy as np
-    import twomillionlines as tm
+    import tl3
+    import duckdb
+    import os
 
-    df = tm.get_df()
 
-    x = df['INC'].to_numpy()
-    y = df['ECC'].to_numpy()
+    x = (
+        duckdb.sql(f"""
+        SELECT INC FROM {repr(tl3.DB_PATH)}
+    """)
+        .pl()['INC']
+        .to_numpy()
+    )
 
-    cmap = cc.cm["fire"].copy()
+    y = (
+        duckdb.sql(f"""
+        SELECT ECC FROM {repr(tl3.DB_PATH)}
+    """)
+        .pl()['ECC']
+        .to_numpy()
+    )
+
+    cmap = cc.cm['fire'].copy()
     cmap.set_bad(cmap.get_under())  # set the color for 0
     bounds = [[x.min(), x.max()], [y.min(), y.max()]]
     extent = [x.min(), x.max(), y.min(), y.max()]
-    print(bounds)
+
     h = np.flipud(histogram2d(x, y, range=bounds, bins=365).T)
     plt.imshow(h, norm=colors.LogNorm(vmin=1, vmax=h.max()), cmap=cmap, extent=extent)
     plt.gca().set_aspect('auto')
-    plt.xlabel("Inclination [deg]")
-    plt.ylabel("Eccentricity")
+    plt.xlabel('Inclination [deg]')
+    plt.ylabel('Eccentricity')
     plt.colorbar()
+    plt.tight_layout()
     plt.show()
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 38.279 seconds)
+   **Total running time of the script:** (0 minutes 4.951 seconds)
 
 
 .. _sphx_glr_download_gallery_inc_vs_ecc.py:

@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib.request
 import os
-import twomillionlines as tm
+import tl3 as tm
 
 url = 'https://planet4589.org/space/elements/'
 dest_dir = 'data_45'
@@ -22,4 +22,4 @@ for link in soup.findAll('a'):
                 if os.path.exists(dest_file):
                     print(f'File {dest_file} already exists, skipping...')
                 else:
-                    tm.save_file_from_url(full_url, dest_dir)
+                    tm._save_file_from_url(full_url, dest_dir)

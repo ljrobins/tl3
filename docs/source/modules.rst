@@ -1,7 +1,7 @@
-twomillionlines
-===============
+tl3
+===
 
 .. toctree::
    :maxdepth: 4
 
-   twomillionlines
+   tl3

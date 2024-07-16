@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:48.018** total execution time for 4 files **from all galleries**:
+**00:47.921** total execution time for 3 files **from all galleries**:
 
 .. container::
 
@@ -32,15 +32,12 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_gallery_tle_per_day.py` (``../../examples/tle_per_day.py``)
+     - 00:21.849
+     - 0.0
    * - :ref:`sphx_glr_gallery_tle_per_hour_of_day.py` (``../../examples/tle_per_hour_of_day.py``)
-     - 00:48.018
+     - 00:21.120
      - 0.0
    * - :ref:`sphx_glr_gallery_inc_vs_ecc.py` (``../../examples/inc_vs_ecc.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_tle_per_day.py` (``../../examples/tle_per_day.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_tle_per_satnum.py` (``../../examples/tle_per_satnum.py``)
-     - 00:00.000
+     - 00:04.951
      - 0.0

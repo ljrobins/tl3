@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>twomillionlines package &#8212; Spacetrap  documentation</title>
+    <title>tl3 package &#8212; TL3  documentation</title>
   
   
   
@@ -46,8 +46,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'twomillionlines';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Analysis" href="gallery/index.html" />
-    <link rel="prev" title="twomillionlines" href="modules.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -123,7 +121,7 @@
   
   
   
-    <p class="title logo__title">Spacetrap  documentation</p>
+    <p class="title logo__title">TL3  documentation</p>
   
 </a></div>
     
@@ -137,9 +135,9 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="modules.html">
-    twomillionlines
+    tl3
   </a>
 </li>
 
@@ -219,7 +217,9 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -234,9 +234,9 @@ document.write(`
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="modules.html">
-    twomillionlines
+    tl3
   </a>
 </li>
 
@@ -273,18 +273,6 @@ document.write(`
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">twomillionlines package</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -317,10 +305,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">twomillionlines</a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page">twomillionli...</li>
+    <li class="breadcrumb-item active" aria-current="page">tl3 package</li>
   </ul>
 </nav>
 </div>
@@ -337,72 +322,139 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="twomillionlines-package">
-<h1>twomillionlines package<a class="headerlink" href="#twomillionlines-package" title="Link to this heading">#</a></h1>
+  <section id="tl3-package">
+<h1>tl3 package<a class="headerlink" href="#tl3-package" title="Link to this heading">#</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 </section>
-<section id="module-twomillionlines.database">
-<span id="twomillionlines-database-module"></span><h2>twomillionlines.database module<a class="headerlink" href="#module-twomillionlines.database" title="Link to this heading">#</a></h2>
+<section id="module-tl3.database">
+<span id="tl3-database-module"></span><h2>tl3.database module<a class="headerlink" href="#module-tl3.database" title="Link to this heading">#</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.build_df">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">build_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">look_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#twomillionlines.database.build_df" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.build_parquet">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">build_parquet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parquet_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_scratch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#tl3.database.build_parquet" title="Link to this definition">#</a></dt>
+<dd><p>Builds and saves a parquet file from all the TLE files (ending in .txt) in the target directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tle_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Target directory to search for TLEs, defaults to None (uses the default internal location ./txt/)</p></li>
+<li><p><strong>parquet_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory to save the parquet file to, defaults to None (uses the default internal location ./processed/)</p></li>
+<li><p><strong>from_scratch</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to build the dataframe from scratch (necessary if the schema changes) or to append new TLEs, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pl.exceptions.ComputeError</strong> – If an error occurs within polars while parsing the TLE file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.database.df_row_to_tle">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">df_row_to_tle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tl3.database.df_row_to_tle" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.df_row_to_tle">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">df_row_to_tle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#twomillionlines.database.df_row_to_tle" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.float_to_implied_decimal_point">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">float_to_implied_decimal_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#tl3.database.float_to_implied_decimal_point" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.file_of_tles">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">file_of_tles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#twomillionlines.database.file_of_tles" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.implied_decimal_to_float">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">implied_decimal_to_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Series</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Expr</span></span></span><a class="headerlink" href="#tl3.database.implied_decimal_to_float" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.float_to_implied_decimal_point">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">float_to_implied_decimal_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#twomillionlines.database.float_to_implied_decimal_point" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.l1_l2_df_from_tle_file">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">l1_l2_df_from_tle_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#tl3.database.l1_l2_df_from_tle_file" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.implied_decimal_to_float">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">implied_decimal_to_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#twomillionlines.database.implied_decimal_to_float" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.process_df">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">process_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#tl3.database.process_df" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.print_str_differences">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">print_str_differences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#twomillionlines.database.print_str_differences" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.tle_to_l1">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">tle_to_l1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#tl3.database.tle_to_l1" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.tle_to_l1">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">tle_to_l1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#twomillionlines.database.tle_to_l1" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.tle_to_l2">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">tle_to_l2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#tl3.database.tle_to_l2" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.tle_to_l2">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">tle_to_l2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#twomillionlines.database.tle_to_l2" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.database.tles_between">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.database.</span></span><span class="sig-name descname"><span class="pre">tles_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norad_cat_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_as</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'polars'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#twomillionlines.database.tles_between" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.database.tles_between">
+<span class="sig-prename descclassname"><span class="pre">tl3.database.</span></span><span class="sig-name descname"><span class="pre">tles_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norad_cat_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_as</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'polars'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tl3.database.tles_between" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-twomillionlines.query">
-<span id="twomillionlines-query-module"></span><h2>twomillionlines.query module<a class="headerlink" href="#module-twomillionlines.query" title="Link to this heading">#</a></h2>
+<section id="module-tl3.query">
+<span id="tl3-query-module"></span><h2>tl3.query module<a class="headerlink" href="#module-tl3.query" title="Link to this heading">#</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.query.internet">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.query.</span></span><span class="sig-name descname"><span class="pre">internet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.8.8.8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">53</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#twomillionlines.query.internet" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.query.date_pairs_between">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">date_pairs_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tl3.query.date_pairs_between" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.delete_credentials_cache">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">delete_credentials_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tl3.query.delete_credentials_cache" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.fill_tle_gaps">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">fill_tle_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#tl3.query.fill_tle_gaps" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.get_spacetrack_client">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">get_spacetrack_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SpaceTrackClient</span></span></span><a class="headerlink" href="#tl3.query.get_spacetrack_client" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.get_tle_file_list">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">get_tle_file_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tl3.query.get_tle_file_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.get_tle_file_list_as_dates">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">get_tle_file_list_as_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tl3.query.get_tle_file_list_as_dates" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.get_tle_gaps">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">get_tle_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tl3.query.get_tle_gaps" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.internet">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">internet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.8.8.8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">53</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tl3.query.internet" title="Link to this definition">#</a></dt>
 <dd><p>Host: 8.8.8.8 (google-public-dns-a.google.com)
 OpenPort: 53/tcp
 Service: domain (DNS/TCP)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.query.query_tles_between">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.query.</span></span><span class="sig-name descname"><span class="pre">query_tles_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SpaceTrackClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtimes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tle'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#twomillionlines.query.query_tles_between" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.query.load_query_dates">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">load_query_dates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tl3.query.load_query_dates" title="Link to this definition">#</a></dt>
+<dd><p>Loads the historical TLE query dates. Note that these are distributed such that each resulting .txt file is about 20 MB (~150k TLEs)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pairs of query datetimes, increasing in the list and increasing within the tuple entries</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[tuple[datetime.date, datetime.date]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.load_secrets">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">load_secrets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tl3.query.load_secrets" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.query_tles_between">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">query_tles_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SpaceTrackClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtimes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tle'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tl3.query.query_tles_between" title="Link to this definition">#</a></dt>
 <dd><p>Gets all TLEs published in the range of datetimes passed</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -421,32 +473,48 @@ Service: domain (DNS/TCP)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.query.request">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">twomillionlines.query.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">st</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SpaceTrackClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tle'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#twomillionlines.query.request" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.query.request">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">st</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SpaceTrackClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_existing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tl3.query.request" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.query.save_tles">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.query.</span></span><span class="sig-name descname"><span class="pre">save_tles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tle'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#twomillionlines.query.save_tles" title="Link to this definition">#</a></dt>
-<dd><p>Dates increasing please thanks</p>
+<dt class="sig sig-object py" id="tl3.query.save_tles">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">save_tles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_existing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tl3.query.save_tles" title="Link to this definition">#</a></dt>
+<dd><p>Queries and saves TLEs for a set of pairs of datetimes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dates</strong> (<em>list</em><em>[</em><em>dt.datetime</em><em>]</em>) – _description_</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dates</strong> (<em>list</em><em>[</em><em>datetime.date</em><em>]</em>) – Dates to query pairs for</p></li>
+<li><p><strong>save_dir</strong> (<em>bool</em><em>, </em><em>optional</em>) – Directory to save .txts of TLEs to, defaults to None (the default internal package destination ./txt/<a href="#id1"><span class="problematic" id="id2">*</span></a>.txt)</p></li>
+<li><p><strong>endpoint</strong> (<em>str</em><em>, </em><em>optional</em>) – The Space-Track endpoint to query, defaults to ‘tle’</p></li>
+<li><p><strong>skip_existing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to skip pairs of dates where the TLE file has already been saved, defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tl3.query.update_tle_cache">
+<span class="sig-prename descclassname"><span class="pre">tl3.query.</span></span><span class="sig-name descname"><span class="pre">update_tle_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tle_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#tl3.query.update_tle_cache" title="Link to this definition">#</a></dt>
+<dd><p>Updates the cache with any new TLEs up to the beginning of the last UTC day</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tle_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory to search for TLE .txt files, defaults to None (defaults to the internal destination ./txt/)</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
-<section id="module-twomillionlines.scrape">
-<span id="twomillionlines-scrape-module"></span><h2>twomillionlines.scrape module<a class="headerlink" href="#module-twomillionlines.scrape" title="Link to this heading">#</a></h2>
+<section id="module-tl3.scrape">
+<span id="tl3-scrape-module"></span><h2>tl3.scrape module<a class="headerlink" href="#module-tl3.scrape" title="Link to this heading">#</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="twomillionlines.scrape.save_file_from_url">
-<span class="sig-prename descclassname"><span class="pre">twomillionlines.scrape.</span></span><span class="sig-name descname"><span class="pre">save_file_from_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#twomillionlines.scrape.save_file_from_url" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tl3.scrape._save_file_from_url">
+<span class="sig-prename descclassname"><span class="pre">tl3.scrape.</span></span><span class="sig-name descname"><span class="pre">_save_file_from_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tl3.scrape._save_file_from_url" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-twomillionlines">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-twomillionlines" title="Link to this heading">#</a></h2>
+<section id="module-tl3">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tl3" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -460,24 +528,6 @@ Service: domain (DNS/TCP)</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="modules.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">twomillionlines</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="gallery/index.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Analysis</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -497,30 +547,40 @@ Service: domain (DNS/TCP)</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-twomillionlines.database">twomillionlines.database module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.build_df"><code class="docutils literal notranslate"><span class="pre">build_df()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.df_row_to_tle"><code class="docutils literal notranslate"><span class="pre">df_row_to_tle()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.file_of_tles"><code class="docutils literal notranslate"><span class="pre">file_of_tles()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.float_to_implied_decimal_point"><code class="docutils literal notranslate"><span class="pre">float_to_implied_decimal_point()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.implied_decimal_to_float"><code class="docutils literal notranslate"><span class="pre">implied_decimal_to_float()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.print_str_differences"><code class="docutils literal notranslate"><span class="pre">print_str_differences()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.tle_to_l1"><code class="docutils literal notranslate"><span class="pre">tle_to_l1()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.tle_to_l2"><code class="docutils literal notranslate"><span class="pre">tle_to_l2()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.database.tles_between"><code class="docutils literal notranslate"><span class="pre">tles_between()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tl3.database">tl3.database module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.build_parquet"><code class="docutils literal notranslate"><span class="pre">build_parquet()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.df_row_to_tle"><code class="docutils literal notranslate"><span class="pre">df_row_to_tle()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.float_to_implied_decimal_point"><code class="docutils literal notranslate"><span class="pre">float_to_implied_decimal_point()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.implied_decimal_to_float"><code class="docutils literal notranslate"><span class="pre">implied_decimal_to_float()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.l1_l2_df_from_tle_file"><code class="docutils literal notranslate"><span class="pre">l1_l2_df_from_tle_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.process_df"><code class="docutils literal notranslate"><span class="pre">process_df()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.tle_to_l1"><code class="docutils literal notranslate"><span class="pre">tle_to_l1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.tle_to_l2"><code class="docutils literal notranslate"><span class="pre">tle_to_l2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.database.tles_between"><code class="docutils literal notranslate"><span class="pre">tles_between()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-twomillionlines.query">twomillionlines.query module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.query.internet"><code class="docutils literal notranslate"><span class="pre">internet()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.query.query_tles_between"><code class="docutils literal notranslate"><span class="pre">query_tles_between()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.query.request"><code class="docutils literal notranslate"><span class="pre">request()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.query.save_tles"><code class="docutils literal notranslate"><span class="pre">save_tles()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tl3.query">tl3.query module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.date_pairs_between"><code class="docutils literal notranslate"><span class="pre">date_pairs_between()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.delete_credentials_cache"><code class="docutils literal notranslate"><span class="pre">delete_credentials_cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.fill_tle_gaps"><code class="docutils literal notranslate"><span class="pre">fill_tle_gaps()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.get_spacetrack_client"><code class="docutils literal notranslate"><span class="pre">get_spacetrack_client()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.get_tle_file_list"><code class="docutils literal notranslate"><span class="pre">get_tle_file_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.get_tle_file_list_as_dates"><code class="docutils literal notranslate"><span class="pre">get_tle_file_list_as_dates()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.get_tle_gaps"><code class="docutils literal notranslate"><span class="pre">get_tle_gaps()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.internet"><code class="docutils literal notranslate"><span class="pre">internet()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.load_query_dates"><code class="docutils literal notranslate"><span class="pre">load_query_dates()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.load_secrets"><code class="docutils literal notranslate"><span class="pre">load_secrets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.query_tles_between"><code class="docutils literal notranslate"><span class="pre">query_tles_between()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.request"><code class="docutils literal notranslate"><span class="pre">request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.save_tles"><code class="docutils literal notranslate"><span class="pre">save_tles()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.query.update_tle_cache"><code class="docutils literal notranslate"><span class="pre">update_tle_cache()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-twomillionlines.scrape">twomillionlines.scrape module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twomillionlines.scrape.save_file_from_url"><code class="docutils literal notranslate"><span class="pre">save_file_from_url()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tl3.scrape">tl3.scrape module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tl3.scrape._save_file_from_url"><code class="docutils literal notranslate"><span class="pre">_save_file_from_url()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-twomillionlines">Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tl3">Module contents</a></li>
 </ul>
   </nav></div>
 

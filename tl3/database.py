@@ -11,7 +11,7 @@ from .query import get_tle_file_list, get_tle_file_list_as_dates
 DT_REF = datetime.datetime(1958, 1, 1, tzinfo=datetime.timezone.utc)
 
 
-def float_to_implied_decimal_point(v: float) -> str:
+def _float_to_implied_decimal_point(v: float) -> str:
     p = int(f'{v:e}'[-3:])
     if p != 0:
         p += 1
@@ -22,7 +22,7 @@ def float_to_implied_decimal_point(v: float) -> str:
     return f'{m}{p:+.0f}'
 
 
-def tle_to_l1(tle) -> str:
+def _tle_to_l1(tle) -> str:
     day_of_year = f"{tle['EPOCH'].timetuple().tm_yday-1:03}"
     day_fraction = (
         tle['EPOCH'].hour / 24
@@ -34,12 +34,12 @@ def tle_to_l1(tle) -> str:
     day_fraction_str = f'{day_fraction:.8f}'
     n_dot = f"{tle['N_DOT']:+.8f}"
     n_dot = (n_dot[:1] + n_dot[2:]).replace('+', ' ')
-    b_star = float_to_implied_decimal_point(tle['B_STAR'])
-    l1_ = f"1 {tle['NORAD_CAT_ID']:05d}U {tle['INTL_DES'].ljust(8, ' ')} {year_last_two}{day_of_year}{day_fraction_str.lstrip('0')} {n_dot} {float_to_implied_decimal_point(tle['N_DDOT'])} {b_star} 0 {str(tle['ELSET_NUM']).rjust(4, ' ')}{tle['CHECKSUM1']}"
+    b_star = _float_to_implied_decimal_point(tle['B_STAR'])
+    l1_ = f"1 {tle['NORAD_CAT_ID']:05d}U {tle['INTL_DES'].ljust(8, ' ')} {year_last_two}{day_of_year}{day_fraction_str.lstrip('0')} {n_dot} {_float_to_implied_decimal_point(tle['N_DDOT'])} {b_star} 0 {str(tle['ELSET_NUM']).rjust(4, ' ')}{tle['CHECKSUM1']}"
     return l1_
 
 
-def tle_to_l2(tle) -> str:
+def _tle_to_l2(tle) -> str:
     ecc = f"{tle['ECC']:>08.7f}"
     ecc = ecc[2:]
     n = f"{tle['N']:>011.8f}"
@@ -47,9 +47,9 @@ def tle_to_l2(tle) -> str:
     return l2_
 
 
-def df_row_to_tle(tle) -> Tuple[str, str]:
-    l1_ = tle_to_l1(tle)
-    l2_ = tle_to_l2(tle)
+def _df_row_to_tle(tle) -> Tuple[str, str]:
+    l1_ = _tle_to_l1(tle)
+    l2_ = _tle_to_l2(tle)
     return (l1_, l2_)
 
 
@@ -58,7 +58,7 @@ def _build_df_from_files(file_paths: list[str]) -> pl.DataFrame:
     with alive_bar() as bar:
         for f in file_paths:
             try:
-                df = l1_l2_df_from_tle_file(f)
+                df = _l1_l2_df_from_tle_file(f)
             except pl.exceptions.ComputeError as e:
                 print(f)
                 raise e
@@ -66,7 +66,7 @@ def _build_df_from_files(file_paths: list[str]) -> pl.DataFrame:
             if 'TLE_LINE1' not in df:
                 continue
 
-            df = process_df(f, df)
+            df = _process_df(f, df)
             df.shrink_to_fit(in_place=True)
             dfs.vstack(df, in_place=True)
             bar(df.height)
@@ -168,9 +168,22 @@ def tles_between(
     date_start: datetime.datetime,
     date_end: datetime.datetime,
     norad_cat_id: Union[int, str] = 'all',
-    cols: List[str] = '*',
-    return_as: str = 'polars',
-):
+    cols: Union[List[str], str] = '*',
+    return_as: str = 'polars') -> Union[pl.DataFrame, duckdb.duckdb.DuckDBPyRelation, np.ndarray]:
+    """
+
+    :param date_start: Start datetime for the query, in UTC
+    :type date_start: datetime.datetime
+    :param date_end: End datetime for the query, in UTC
+    :type date_end: datetime.datetime
+    :param norad_cat_id: NORAD ID to query for (either a single int or "all"), defaults to 'all'
+    :type norad_cat_id: Union[int, str], optional
+    :param cols: SQL-style selectors for column names. Either a list of strings (ex. ``["EPOCH", "INC"]``), or ``"*"`` for all columns, defaults to ``"*"``
+    :type cols: Union[List[str], str], optional
+    :param return_as: Format to return results as. "duck" returns the raw duckdb query result, "polars" returns a polars DataFrame, and "tle" returns a numpy string [nx2] array, defaults to "polars"
+    :type return_as: string, optional
+    """
+    
     assert return_as.lower() in [
         'polars',
         'tle',
@@ -211,13 +224,13 @@ def tles_between(
         l1s = np.zeros(x.height, dtype='<U69')
         l2s = np.zeros(x.height, dtype='<U69')
         for i, row in enumerate(x.iter_rows(named=True)):
-            l1s[i], l2s[i] = df_row_to_tle(row)
+            l1s[i], l2s[i] = _df_row_to_tle(row)
         return np.vstack((l1s, l2s)).T
     else:
         return x
 
 
-def l1_l2_df_from_tle_file(fpath: str) -> pl.DataFrame:
+def _l1_l2_df_from_tle_file(fpath: str) -> pl.DataFrame:
     df = pl.read_csv(fpath, has_header=False)
     df = df.with_row_index()
     df = df.with_columns(
@@ -244,7 +257,7 @@ def l1_l2_df_from_tle_file(fpath: str) -> pl.DataFrame:
     return df
 
 
-def implied_decimal_to_float(s: pl.Series) -> pl.Expr:
+def _implied_decimal_to_float(s: pl.Series) -> pl.Expr:
     # s is a pl.col(col_name).str.slice(start, length) instance
     return (
         s.str.head(5).str.strip_chars().str.to_integer(strict=False)
@@ -253,7 +266,7 @@ def implied_decimal_to_float(s: pl.Series) -> pl.Expr:
     )
 
 
-def process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
+def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
     df = df.filter(
         (pl.col('TLE_LINE1').str.len_chars() == 69),
         (pl.col('TLE_LINE2').str.len_chars() == 69),
@@ -284,10 +297,10 @@ def process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
         .str.strip_chars()
         .cast(pl.Float32)
         .alias('N_DOT'),
-        implied_decimal_to_float(df['TLE_LINE1'].str.slice(44, 8))
+        _implied_decimal_to_float(df['TLE_LINE1'].str.slice(44, 8))
         .cast(pl.Float32)
         .alias('N_DDOT'),
-        implied_decimal_to_float(df['TLE_LINE1'].str.slice(53, 8))
+        _implied_decimal_to_float(df['TLE_LINE1'].str.slice(53, 8))
         .cast(pl.Float32)
         .alias('B_STAR'),
         pl.col('TLE_LINE1')

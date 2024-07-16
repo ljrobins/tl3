@@ -23,7 +23,7 @@ TLE Production Per Day
 
 Plotting the number of TLEs produced every day since 1958
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-24
+.. GENERATED FROM PYTHON SOURCE LINES 7-26
 
 
 
@@ -33,43 +33,35 @@ Plotting the number of TLEs produced every day since 1958
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    read time: 25.30 seconds
 
 
-
-
-
-
-|
 
 .. code-block:: Python
 
 
-    import twomillionlines as tm
+    import tl3
 
     import matplotlib.pyplot as plt
     import time
+    import duckdb
+    import os
 
-    t1 = time.time()
-    df = tm.get_df()
-    print(f"read time: {time.time()-t1:.2f} seconds")
+    x = duckdb.sql(f"""
+        SELECT EPOCH FROM {repr(tl3.DB_PATH)}
+    """).pl()['EPOCH']
 
-    x = df['EPOCH']
-    del df
-    range_days = int((x.max() - x.min()).total_seconds() / 86400)
+    range_days = int((x.max() - x.min()).total_seconds() / 86400 / 2)
     plt.hist(x, bins=range_days)
-    plt.xlabel("Year")
-    plt.ylabel("TLEs Per Day")
+    plt.xlabel('Year')
+    plt.ylabel('TLEs Per Day')
     plt.grid()
+    plt.tight_layout()
     plt.show()
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 55.922 seconds)
+   **Total running time of the script:** (0 minutes 21.849 seconds)
 
 
 .. _sphx_glr_download_gallery_tle_per_day.py:

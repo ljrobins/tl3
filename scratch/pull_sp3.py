@@ -1,7 +1,7 @@
 #  odd days?
 
 import datetime
-import twomillionlines as tm
+import tl3 as tm
 import urllib
 import time
 from bs4 import BeautifulSoup
@@ -24,7 +24,7 @@ for wk in range(now_wk, end_gps_wk, -1):
     for sp3 in sp3_names:
         sp3_url = os.path.join(folder_url, sp3)
         try:
-            tm.save_file_from_url(sp3_url, save_path)
+            tm._save_file_from_url(sp3_url, save_path)
         except gzip.BadGzipFile:
             print(f'{sp3} was a bad gzip file, skipping...')
         time.sleep(1.0)
