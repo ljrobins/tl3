@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>TL3 &#8212; TL3  documentation</title>
+    <title>Why tl3? &#8212; tl3  documentation</title>
   
   
   
@@ -125,7 +125,7 @@
   
   
   
-    <p class="title logo__title">TL3  documentation</p>
+    <p class="title logo__title">tl3  documentation</p>
   
 </a></div>
     
@@ -300,9 +300,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="tl3">
-<h1>TL3<a class="headerlink" href="#tl3" title="Link to this heading">#</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">tl3</span></code> provides two things: the ability to automatically and efficiently download every two-line element (TLE) ever published by Space-Track (while staying within the API-imposed rate limit), and piping the 28 GB of resulting .txt files into a parquet file for efficient analysis using packages like <code class="docutils literal notranslate"><span class="pre">duckdb</span></code> or <code class="docutils literal notranslate"><span class="pre">polars</span></code>.</p>
+  <section id="why-tl3">
+<h1>Why <code class="docutils literal notranslate"><span class="pre">tl3</span></code>?<a class="headerlink" href="#why-tl3" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">tl3</span></code> provides two things: the ability to automatically and efficiently download every two-line element (TLE) ever published by Space-Track (while staying within the API-imposed rate limit), and piping the resulting <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files into a parquet file for efficient analysis using packages like <code class="docutils literal notranslate"><span class="pre">duckdb</span></code> or <code class="docutils literal notranslate"><span class="pre">polars</span></code>.</p>
 </section>
 <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
@@ -336,7 +336,26 @@ document.write(`
 </section>
 <section id="querying-the-database">
 <h1>Querying The Database<a class="headerlink" href="#querying-the-database" title="Link to this heading">#</a></h1>
-<p>Once the parquet file is built, you can run queries against the full dataset using <code class="docutils literal notranslate"><span class="pre">duckdb</span></code>. For example, you can query the NORAD catalog IDs for all polar satellites in LEO with at least one TLE produced in 2024 with:</p>
+<p>Once the parquet file is built, you can query TLEs between two dates for a single NORAD ID or the full catalog:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tles</span> <span class="o">=</span> <span class="n">tl3</span><span class="o">.</span><span class="n">tles_between</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">norad_cat_id</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">return_as</span><span class="o">=</span><span class="s1">&#39;tle&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="s1">&#39;1 44928U 20001Q   24000.00001156 -.00049610  00000-0 -48650-3 0  9997&#39;</span>
+<span class="s1">&#39;2 44928 053.0540 322.4610 0001433 089.1120 141.4850 15.65344620   574&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;1 45705U 20035BA  24000.00001156  .00214062  00000-0  83880-3 0  9991&#39;</span>
+<span class="s1">&#39;2 45705 053.0460 027.5330 0008402 050.5410 020.3000 15.85815525   605&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;1 46031U 20055E   24000.00001156 -.00024118  00000-0 -16770-2 0  9998&#39;</span>
+<span class="s1">&#39;2 46031 053.0530 116.6100 0001254 079.9010 008.0290 15.04774666   583&#39;</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="p">[</span><span class="s1">&#39;1 20962U 75100F   24000.99892966  .00000079  00000-0  00000-0 0  9996&#39;</span>
+<span class="s1">&#39;2 20962 004.5720 273.5430 0280693 054.9400 307.9080 01.01930308 12691&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;1 20962U 75100F   24000.99892968  .00000079  00000-0  00000-0 0  9996&#39;</span>
+<span class="s1">&#39;2 20962 004.5720 273.5430 0280682 054.9380 307.9090 01.01930308 12692&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;1 20962U 75100F   24000.99892985  .00000079  00000-0  00000-0 0  9996&#39;</span>
+<span class="s1">&#39;2 20962 004.5720 273.5430 0280690 054.9390 307.9080 01.01930308 12694&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>You can also run queries directly against the full dataset using <code class="docutils literal notranslate"><span class="pre">duckdb</span></code>. For example, you can query the NORAD catalog IDs for all polar satellites in LEO with at least one TLE produced in 2024 with:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tl3</span>
 <span class="kn">import</span> <span class="nn">duckdb</span>
 
@@ -360,6 +379,33 @@ document.write(`
 │ 2877         │
 │ 2861         │
 └──────────────┘
+</pre></div>
+</div>
+<p>Or we could get the inclination and eccentricity history of the ISS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT EPOCH, INC, ECC FROM </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">tl3</span><span class="o">.</span><span class="n">DB_PATH</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">    WHERE NORAD_CAT_ID == 25544</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pl</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>shape: (48_981, 3)
+┌─────────────────────────┬───────────┬──────────┐
+│ EPOCH                   ┆ INC       ┆ ECC      │
+│ ---                     ┆ ---       ┆ ---      │
+│ datetime[μs]            ┆ f32       ┆ f32      │
+╞═════════════════════════╪═══════════╪══════════╡
+│ 1998-11-21 06:49:59.999 ┆ 51.59     ┆ 0.012536 │
+│ 1998-11-21 07:58:35.072 ┆ 51.617001 ┆ 0.012341 │
+│ 1998-11-21 10:57:42.787 ┆ 51.591    ┆ 0.012586 │
+│ 1998-11-21 12:27:32.846 ┆ 51.595001 ┆ 0.012386 │
+│ 1998-11-21 13:57:13.741 ┆ 51.595001 ┆ 0.012396 │
+│ …                       ┆ …         ┆ …        │
+│ 2024-07-16 10:39:50.426 ┆ 51.637001 ┆ 0.00103  │
+│ 2024-07-16 11:17:07.495 ┆ 51.638    ┆ 0.00102  │
+│ 2024-07-16 17:37:27.269 ┆ 51.638    ┆ 0.001024 │
+│ 2024-07-16 19:56:56.165 ┆ 51.636002 ┆ 0.001031 │
+│ 2024-07-16 20:17:12.377 ┆ 51.638    ┆ 0.001063 │
+└─────────────────────────┴───────────┴──────────┘
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">
@@ -408,7 +454,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">TL3</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Why <code class="docutils literal notranslate"><span class="pre">tl3</span></code>?</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-the-database">Querying The Database</a></li>

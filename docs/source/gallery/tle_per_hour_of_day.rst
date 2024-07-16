@@ -23,7 +23,7 @@ TLE Production Per Hour of the Day
 
 Daily TLE production in UTC
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-31
+.. GENERATED FROM PYTHON SOURCE LINES 7-30
 
 
 
@@ -41,7 +41,6 @@ Daily TLE production in UTC
 
     import tl3
     import duckdb
-    import os
 
     import matplotlib.pyplot as plt
     import polars as pl
@@ -66,7 +65,7 @@ Daily TLE production in UTC
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 20.988 seconds)
+   **Total running time of the script:** (0 minutes 21.504 seconds)
 
 
 .. _sphx_glr_download_gallery_tle_per_hour_of_day.py:

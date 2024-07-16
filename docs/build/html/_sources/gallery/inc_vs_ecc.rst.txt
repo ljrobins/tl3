@@ -21,7 +21,7 @@
 Inclination vs Eccentricity
 ===========================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-45
+.. GENERATED FROM PYTHON SOURCE LINES 5-44
 
 
 
@@ -44,7 +44,6 @@ Inclination vs Eccentricity
     import numpy as np
     import tl3
     import duckdb
-    import os
 
 
     x = (
@@ -80,7 +79,7 @@ Inclination vs Eccentricity
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.152 seconds)
+   **Total running time of the script:** (0 minutes 4.393 seconds)
 
 
 .. _sphx_glr_download_gallery_inc_vs_ecc.py:

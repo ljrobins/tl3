@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tl3.query &#8212; TL3  documentation</title>
+    <title>tl3.query &#8212; tl3  documentation</title>
   
   
   
@@ -123,7 +123,7 @@
   
   
   
-    <p class="title logo__title">TL3  documentation</p>
+    <p class="title logo__title">tl3  documentation</p>
   
 </a></div>
     
@@ -336,7 +336,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">pairwise</span>
 <span class="kn">import</span> <span class="nn">ssl</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
@@ -513,8 +512,7 @@ document.write(`
 <div class="viewcode-block" id="delete_credentials_cache">
 <a class="viewcode-back" href="../../tl3.query.html#tl3.query.delete_credentials_cache">[docs]</a>
 <span class="k">def</span> <span class="nf">delete_credentials_cache</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deletes the local Space-Track credentials cache. Use only if you want to re-input the username and password for whatever reason.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deletes the local Space-Track credentials cache. Use only if you want to re-input the username and password for whatever reason.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="nb">input</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Are you sure you want to remove </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TL3_SECRETS_CACHE&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">? (y/n)&quot;</span>
@@ -667,6 +665,7 @@ document.write(`
     <span class="n">tle_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TL3_TXT_DIR&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">tle_dir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">tle_dir</span>
     <span class="n">dates</span> <span class="o">=</span> <span class="n">_get_tle_gaps</span><span class="p">(</span><span class="n">tle_dir</span><span class="p">)</span>
     <span class="n">save_tles</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">tle_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_save_file_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">save_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>

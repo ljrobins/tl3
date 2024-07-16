@@ -13,7 +13,7 @@ import os
 project = 'tl3'
 copyright = f'2024-{date.today().year}, Liam Robinson'
 author = 'Liam Robinson'
-version = '0.0.5'
+version = '0.0.6'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

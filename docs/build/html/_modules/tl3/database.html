@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tl3.database &#8212; TL3  documentation</title>
+    <title>tl3.database &#8212; tl3  documentation</title>
   
   
   
@@ -123,7 +123,7 @@
   
   
   
-    <p class="title logo__title">TL3  documentation</p>
+    <p class="title logo__title">tl3  documentation</p>
   
 </a></div>
     
@@ -464,7 +464,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="build_parquet">
-<a class="viewcode-back" href="../../tl3.html#tl3.database.build_parquet">[docs]</a>
+<a class="viewcode-back" href="../../tl3.database.html#tl3.database.build_parquet">[docs]</a>
 <span class="k">def</span> <span class="nf">build_parquet</span><span class="p">(</span>
     <span class="n">tle_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parquet_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -494,13 +494,14 @@ document.write(`
 
 
 <div class="viewcode-block" id="tles_between">
-<a class="viewcode-back" href="../../tl3.html#tl3.database.tles_between">[docs]</a>
+<a class="viewcode-back" href="../../tl3.database.html#tl3.database.tles_between">[docs]</a>
 <span class="k">def</span> <span class="nf">tles_between</span><span class="p">(</span>
     <span class="n">date_start</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
     <span class="n">date_end</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
     <span class="n">norad_cat_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span>
     <span class="n">cols</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span>
-    <span class="n">return_as</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;polars&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyRelation</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="n">return_as</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;polars&#39;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyRelation</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    :param date_start: Start datetime for the query, in UTC</span>
@@ -514,7 +515,7 @@ document.write(`
 <span class="sd">    :param return_as: Format to return results as. &quot;duck&quot; returns the raw duckdb query result, &quot;polars&quot; returns a polars DataFrame, and &quot;tle&quot; returns a numpy string [nx2] array, defaults to &quot;polars&quot;</span>
 <span class="sd">    :type return_as: string, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="k">assert</span> <span class="n">return_as</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span>
         <span class="s1">&#39;polars&#39;</span><span class="p">,</span>
         <span class="s1">&#39;tle&#39;</span><span class="p">,</span>
