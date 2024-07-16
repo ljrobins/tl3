@@ -3,14 +3,12 @@ import tl3
 import tl3
 import duckdb
 
-df = duckdb.sql(f"""
-    SELECT DISTINCT NORAD_CAT_ID FROM {repr(tl3.DB_PATH)}
-    WHERE EPOCH BETWEEN '2024-01-01' AND '2025-01-01'
-    AND ABS(INC - 90) < 0.1
-    AND N < 10
-""")
-
-# .pl()
+# df = duckdb.sql(f"""
+#     SELECT DISTINCT NORAD_CAT_ID FROM {repr(tl3.DB_PATH)}
+#     WHERE EPOCH BETWEEN '2024-01-01' AND '2025-01-01'
+#     AND ABS(INC - 90) < 0.1
+#     AND N < 10
+# """)
 
 print(type(df))
 

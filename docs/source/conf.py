@@ -11,7 +11,7 @@ from datetime import date
 project = 'TL3'
 copyright = f'2024-{date.today().year}, Liam Robinson'
 author = 'Liam Robinson'
-version = '0.0.1'
+version = '0.0.3'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
