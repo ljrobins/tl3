@@ -25,6 +25,7 @@ polars = ">=0.0.1"
 httpx = ">=0.0.1"
 duckdb = ">=0.0.1"
 pyarrow = ">=0.0.1"
+alive-progress = ">0.0.1"
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/ljrobins/mirage"

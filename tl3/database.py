@@ -52,6 +52,7 @@ def df_row_to_tle(tle) -> Tuple[str, str]:
     l2_ = tle_to_l2(tle)
     return (l1_, l2_)
 
+
 def _build_df_from_files(file_paths: list[str]) -> pl.DataFrame:
     dfs = pl.DataFrame()
     with alive_bar() as bar:
@@ -71,27 +72,32 @@ def _build_df_from_files(file_paths: list[str]) -> pl.DataFrame:
             bar(df.height)
     return dfs
 
+
 def _build_df_from_scratch(tle_dir: str, save_path: str) -> None:
     files = get_tle_file_list(tle_dir)
     df = _build_df_from_files(files)
 
     _save_df_to_parquet(df, save_path)
 
+
 def _append_new_tles_to_df(tle_dir: str, save_path: str) -> None:
-    
-    max_date = duckdb.sql(
-        f"""
+    max_date = (
+        duckdb.sql(
+            f"""
         SELECT max(EPOCH) FROM {repr(save_path)}
         WHERE EPOCH < '2024-07-05'
         """
-    ).fetchone()[0].date()
+        )
+        .fetchone()[0]
+        .date()
+    )
 
     files = get_tle_file_list(tle_dir)
     dates = get_tle_file_list_as_dates(tle_dir)
-    
+
     unused_files = []
 
-    for f,d in zip(files, dates):
+    for f, d in zip(files, dates):
         if d[1] > max_date:
             unused_files.append(f)
 
@@ -107,8 +113,9 @@ def _append_new_tles_to_df(tle_dir: str, save_path: str) -> None:
     print(f'Appended {df.height} TLEs to the master database!')
 
 
-def _save_df_to_parquet(df_or_duckdb_table_name: str | pl.DataFrame, save_path: str) -> None:
-
+def _save_df_to_parquet(
+    df_or_duckdb_table_name: str | pl.DataFrame, save_path: str
+) -> None:
     print(f'Writing to parquet at {save_path}...')
     t1 = time.time()
 
@@ -119,7 +126,7 @@ def _save_df_to_parquet(df_or_duckdb_table_name: str | pl.DataFrame, save_path: 
                 TO {repr(save_path)}
                 (FORMAT 'parquet', COMPRESSION 'lz4');
         """)
-    else: # then it's a duckdb table name
+    else:  # then it's a duckdb table name
         duckdb.sql(f"""
             COPY
                 (SELECT * FROM {df_or_duckdb_table_name})
@@ -130,7 +137,9 @@ def _save_df_to_parquet(df_or_duckdb_table_name: str | pl.DataFrame, save_path: 
     print(f'Writing to parquet took {time.time() - t1:.1f} seconds')
 
 
-def build_parquet(tle_dir: str = None, parquet_dir: str = None, from_scratch: bool = False) -> None:
+def build_parquet(
+    tle_dir: str = None, parquet_dir: str = None, from_scratch: bool = False
+) -> None:
     """Builds and saves a parquet file from all the TLE files (ending in .txt) in the target directory
 
     :param tle_dir: Target directory to search for TLEs, defaults to None (uses the default internal location ./txt/)

@@ -33,11 +33,7 @@ def test1():
     print(time.time() - t1)
 
     t1 = time.time()
-    pl_res = (
-        pl.scan_parquet(db_path)
-        .filter(pl.col('NORAD_CAT_ID') == 25544)
-        .collect()
-    )
+    pl_res = pl.scan_parquet(db_path).filter(pl.col('NORAD_CAT_ID') == 25544).collect()
     print(time.time() - t1)
 
 
@@ -100,6 +96,7 @@ def test4():
         .collect()
     )
     print(time.time() - t1)
+
 
 test1()
 test2()

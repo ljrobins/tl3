@@ -82,9 +82,11 @@ async def request(
 
     for d1, d2 in get_tle_file_list_as_dates(save_dir):
         if d1 <= dt_start and d2 >= dt_end and skip_existing:
-            print(f'TLEs from {dt_start} -- {dt_end} already covered by {repr(file)}, skipping...')
+            print(
+                f'TLEs from {dt_start} -- {dt_end} already covered by {repr(file)}, skipping...'
+            )
             return
-    
+
     success = False
     while not success:
         try:
@@ -197,6 +199,7 @@ def load_query_dates() -> list[tuple[datetime.date, datetime.date]]:
     date_pairs = list(pairwise(dates))
     return date_pairs
 
+
 def get_tle_file_list(tle_dir: str = None) -> list[str]:
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
     files = [
@@ -213,7 +216,10 @@ def get_tle_file_list(tle_dir: str = None) -> list[str]:
 
     return full_paths
 
-def get_tle_file_list_as_dates(tle_dir: str = None) -> list[tuple[datetime.date, datetime.date]]:
+
+def get_tle_file_list_as_dates(
+    tle_dir: str = None,
+) -> list[tuple[datetime.date, datetime.date]]:
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
 
     files = get_tle_file_list(tle_dir)
@@ -222,7 +228,7 @@ def get_tle_file_list_as_dates(tle_dir: str = None) -> list[tuple[datetime.date,
         d1, d2 = os.path.split(file)[1].replace('.txt', '').split(' ')
         d1 = datetime.datetime.strptime(d1, '%Y-%m-%d').date()
         d2 = datetime.datetime.strptime(d2, '%Y-%m-%d').date()
-        dates.append((d1,d2))
+        dates.append((d1, d2))
     return dates
 
 
@@ -259,7 +265,10 @@ def update_tle_cache(tle_dir: str = None) -> None:
     else:
         print('TLE cache is up to date!')
 
-def date_pairs_between(date_start: datetime.date, date_end: datetime.date) -> list[tuple[datetime.date, datetime.date]]:
+
+def date_pairs_between(
+    date_start: datetime.date, date_end: datetime.date
+) -> list[tuple[datetime.date, datetime.date]]:
     dates = []
     d = date_start
     assert date_start < date_end
@@ -268,15 +277,16 @@ def date_pairs_between(date_start: datetime.date, date_end: datetime.date) -> li
         d += datetime.timedelta(days=1)
     return list(pairwise(dates))
 
+
 def get_tle_gaps(tle_dir: str) -> list[tuple[datetime.date, datetime.date]]:
     files = get_tle_file_list_as_dates(tle_dir)
     date_gaps = []
-    for f1,f2 in pairwise(files):
+    for f1, f2 in pairwise(files):
         if f1[1] != f2[0]:
-            date_gaps.extend(date_pairs_between(f1[1],f2[0]))
+            date_gaps.extend(date_pairs_between(f1[1], f2[0]))
     return date_gaps
-    
-        
+
+
 def fill_tle_gaps(tle_dir: str = None, **kwargs) -> None:
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
     dates = get_tle_gaps(tle_dir)

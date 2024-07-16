@@ -12,6 +12,15 @@ os.environ['TL3_DB_PATH'] = os.path.join(
 )
 os.environ['TL3_TXT_DIR'] = os.path.join(os.environ['TL3_DIR'], 'txt')
 
+if not os.path.exists(os.path.split(os.environ['TL3_SECRETS_CACHE'])[0]):
+    os.mkdir(os.path.split(os.environ['TL3_SECRETS_CACHE'])[0])
+
+if not os.path.exists(os.path.split(os.environ['TL3_DB_PATH'])[0]):
+    os.mkdir(os.path.split(os.environ['TL3_DB_PATH'])[0])
+
+if not os.path.exists(os.environ['TL3_TXT_DIR']):
+    os.mkdir(os.environ['TL3_TXT_DIR'])
+
 from .query import *
 from .database import *
 from .scrape import *
