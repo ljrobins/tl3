@@ -80,10 +80,11 @@ async def request(
     idstr, fdstr = dt_start.strftime('%Y-%m-%d'), dt_end.strftime('%Y-%m-%d')
     save_path = os.path.join(save_dir, f'{idstr} {fdstr}.txt')
 
-    if skip_existing and os.path.exists(save_path):
-        print(f'TLEs between {dt_start} -- {dt_end} are already saved...')
-        return
-
+    for d1, d2 in get_tle_file_list_as_dates(save_dir):
+        if d1 <= dt_start and d2 >= dt_end and skip_existing:
+            print(f'TLEs from {dt_start} -- {dt_end} already covered by {repr(file)}, skipping...')
+            return
+    
     success = False
     while not success:
         try:
@@ -196,16 +197,8 @@ def load_query_dates() -> list[tuple[datetime.date, datetime.date]]:
     date_pairs = list(pairwise(dates))
     return date_pairs
 
-
-def update_tle_cache(tle_dir: str = None) -> None:
-    """Updates the cache with any new TLEs up to the beginning of the last UTC day
-
-    :param tle_dir: Directory to search for TLE .txt files, defaults to None (defaults to the internal destination ./txt/)
-    :type tle_dir: str, optional
-    """
+def get_tle_file_list(tle_dir: str = None) -> list[str]:
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
-
-    today = datetime.datetime.utcnow().date()
     files = [
         x
         for x in os.listdir(tle_dir)
@@ -216,9 +209,38 @@ def update_tle_cache(tle_dir: str = None) -> None:
         files, key=lambda x: datetime.datetime.strptime(x.split(' ')[0], '%Y-%m-%d')
     )
 
+    full_paths = [os.path.join(tle_dir, f) for f in files]
+
+    return full_paths
+
+def get_tle_file_list_as_dates(tle_dir: str = None) -> list[tuple[datetime.date, datetime.date]]:
+    tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
+
+    files = get_tle_file_list(tle_dir)
+    dates = []
+    for file in files:
+        d1, d2 = os.path.split(file)[1].replace('.txt', '').split(' ')
+        d1 = datetime.datetime.strptime(d1, '%Y-%m-%d').date()
+        d2 = datetime.datetime.strptime(d2, '%Y-%m-%d').date()
+        dates.append((d1,d2))
+    return dates
+
+
+def update_tle_cache(tle_dir: str = None) -> None:
+    """Updates the cache with any new TLEs up to the beginning of the last UTC day
+
+    :param tle_dir: Directory to search for TLE .txt files, defaults to None (defaults to the internal destination ./txt/)
+    :type tle_dir: str, optional
+    """
+    tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
+
+    today = datetime.datetime.utcnow().date()
+
+    files = get_tle_file_list()
+
     dates = []
     day_query = datetime.datetime.strptime(
-        files[-1].split(' ')[1][:-4], '%Y-%m-%d'
+        os.path.split(files[-1])[1].split(' ')[1][:-4], '%Y-%m-%d'
     ).date()
 
     while True:
@@ -236,3 +258,26 @@ def update_tle_cache(tle_dir: str = None) -> None:
         print('TLE cache is up to date!')
     else:
         print('TLE cache is up to date!')
+
+def date_pairs_between(date_start: datetime.date, date_end: datetime.date) -> list[tuple[datetime.date, datetime.date]]:
+    dates = []
+    d = date_start
+    assert date_start < date_end
+    while d <= date_end:
+        dates.append(d)
+        d += datetime.timedelta(days=1)
+    return list(pairwise(dates))
+
+def get_tle_gaps(tle_dir: str) -> list[tuple[datetime.date, datetime.date]]:
+    files = get_tle_file_list_as_dates(tle_dir)
+    date_gaps = []
+    for f1,f2 in pairwise(files):
+        if f1[1] != f2[0]:
+            date_gaps.extend(date_pairs_between(f1[1],f2[0]))
+    return date_gaps
+    
+        
+def fill_tle_gaps(tle_dir: str = None, **kwargs) -> None:
+    tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
+    dates = get_tle_gaps(tle_dir)
+    save_tles(dates, save_dir=tle_dir, **kwargs)

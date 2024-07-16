@@ -6,6 +6,7 @@ from typing import Tuple, Union, List
 import numpy as np
 import duckdb
 from alive_progress import alive_bar
+from .query import get_tle_file_list, get_tle_file_list_as_dates
 
 DT_REF = datetime.datetime(1958, 1, 1, tzinfo=datetime.timezone.utc)
 
@@ -51,30 +52,12 @@ def df_row_to_tle(tle) -> Tuple[str, str]:
     l2_ = tle_to_l2(tle)
     return (l1_, l2_)
 
-
-def build_parquet(target_dir: str = None, parquet_dir: str = None) -> None:
-    """Builds and saves a parquet file from all the TLE files (ending in .txt) in the target directory
-
-    :param target_dir: Target directory to search, defaults to None (uses the default internal location ./txt/)
-    :type target_dir: str, optional
-    :param parquet_dir: Directory to save the parquet file to, defaults to None (uses the default internal location ./processed/)
-    :type parquet_dir: str, optional
-    :raises pl.exceptions.ComputeError: If an error occurs within polars while parsing the TLE file
-    """
-    txt_dir = os.environ['TL3_TXT_DIR'] if target_dir is None else target_dir
-
-    files = [
-        x
-        for x in os.listdir(txt_dir)
-        if os.path.getsize(os.path.join(txt_dir, x)) and x.endswith('.txt')
-    ]
-    files = sorted(files, key=lambda x: datetime.datetime.strptime(x[:10], '%Y-%m-%d'))
+def _build_df_from_files(file_paths: list[str]) -> pl.DataFrame:
     dfs = pl.DataFrame()
     with alive_bar() as bar:
-        for f in files:
-            fp = os.path.join(txt_dir, f)
+        for f in file_paths:
             try:
-                df = l1_l2_df_from_tle_file(fp)
+                df = l1_l2_df_from_tle_file(f)
             except pl.exceptions.ComputeError as e:
                 print(f)
                 raise e
@@ -86,16 +69,90 @@ def build_parquet(target_dir: str = None, parquet_dir: str = None) -> None:
             df.shrink_to_fit(in_place=True)
             dfs.vstack(df, in_place=True)
             bar(df.height)
+    return dfs
+
+def _build_df_from_scratch(tle_dir: str, save_path: str) -> None:
+    files = get_tle_file_list(tle_dir)
+    df = _build_df_from_files(files)
+
+    _save_df_to_parquet(df, save_path)
+
+def _append_new_tles_to_df(tle_dir: str, save_path: str) -> None:
+    
+    max_date = duckdb.sql(
+        f"""
+        SELECT max(EPOCH) FROM {repr(save_path)}
+        WHERE EPOCH < '2024-07-05'
+        """
+    ).fetchone()[0].date()
+
+    files = get_tle_file_list(tle_dir)
+    dates = get_tle_file_list_as_dates(tle_dir)
+    
+    unused_files = []
+
+    for f,d in zip(files, dates):
+        if d[1] > max_date:
+            unused_files.append(f)
+
+    df = _build_df_from_files(unused_files)
+
+    duckdb.sql(f"""
+        CREATE TABLE all_tles AS SELECT * FROM {repr(save_path)};
+        INSERT INTO all_tles SELECT * FROM df;
+    """)
+
+    _save_df_to_parquet(df_or_duckdb_table_name='all_tles', save_path=save_path)
+
+    print(f'Appended {df.height} TLEs to the master database!')
+
+
+def _save_df_to_parquet(df_or_duckdb_table_name: str | pl.DataFrame, save_path: str) -> None:
+
+    print(f'Writing to parquet at {save_path}...')
+    t1 = time.time()
+
+    if isinstance(df_or_duckdb_table_name, pl.DataFrame):
+        duckdb.sql(f"""
+            COPY
+                (SELECT * FROM df_or_duckdb_table_name)
+                TO {repr(save_path)}
+                (FORMAT 'parquet', COMPRESSION 'lz4');
+        """)
+    else: # then it's a duckdb table name
+        duckdb.sql(f"""
+            COPY
+                (SELECT * FROM {df_or_duckdb_table_name})
+                TO {repr(save_path)}
+                (FORMAT 'parquet', COMPRESSION 'lz4');
+        """)
+
+    print(f'Writing to parquet took {time.time() - t1:.1f} seconds')
+
+
+def build_parquet(tle_dir: str = None, parquet_dir: str = None, from_scratch: bool = False) -> None:
+    """Builds and saves a parquet file from all the TLE files (ending in .txt) in the target directory
+
+    :param tle_dir: Target directory to search for TLEs, defaults to None (uses the default internal location ./txt/)
+    :type tle_dir: str, optional
+    :param parquet_dir: Directory to save the parquet file to, defaults to None (uses the default internal location ./processed/)
+    :type parquet_dir: str, optional
+    :param from_scratch: Whether to build the dataframe from scratch (necessary if the schema changes) or to append new TLEs, defaults to False
+    :type from_scratch: bool, optional
+    :raises pl.exceptions.ComputeError: If an error occurs within polars while parsing the TLE file
+    """
+    tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
 
     save_path = (
         os.environ['TL3_DB_PATH']
         if parquet_dir is None
         else os.path.join(parquet_dir, 'twoline.parquet')
     )
-    print(f'Writing df to parquet at {save_path}...')
-    t1 = time.time()
-    dfs.lazy().sink_parquet(save_path, compression='lz4')
-    print(f'Writing df to parquet took {time.time() - t1:.1f} seconds')
+
+    if from_scratch:
+        _build_df_from_scratch(tle_dir, save_path)
+    else:
+        _append_new_tles_to_df(tle_dir, save_path)
 
 
 def tles_between(
@@ -283,7 +340,7 @@ def process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
             + pl.col('EPOCH_DAY') * 86400 * 1e3,
             time_unit='ms',
         ).alias('EPOCH')
-    )
+    ).drop('EPOCH_DAY', 'EPOCH_YEAR')
 
     height_before_drops = df.height
     df = df.drop('TLE_LINE1', 'TLE_LINE2', 'index').drop_nulls()
