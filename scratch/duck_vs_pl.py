@@ -5,23 +5,6 @@ import datetime
 
 db_path = 'tl3/processed/twoline.parquet'
 
-x = duckdb.sql(
-    f"""
-    SELECT DISTINCT row_group_bytes
-    FROM parquet_metadata('{db_path}');
-    """
-)
-print(x)
-
-pl_res = (
-    pl.scan_parquet(db_path)
-    .filter(pl.col('EPOCH') > datetime.datetime(2024, 4, 1))
-    .filter(pl.col('NORAD_CAT_ID') == 25544)
-    .explain()
-)
-print(pl_res)
-
-
 def test1():
     t1 = time.time()
     duck_res = duckdb.sql(
@@ -30,11 +13,11 @@ def test1():
         WHERE NORAD_CAT_ID = 25544
         """
     ).pl()
-    print(time.time() - t1)
+    print(f'DuckDB norad constraint {time.time() - t1:.2f} sec')
 
     t1 = time.time()
     pl_res = pl.scan_parquet(db_path).filter(pl.col('NORAD_CAT_ID') == 25544).collect()
-    print(time.time() - t1)
+    print(f'Polars norad constraint {time.time() - t1:.2f} sec')
 
 
 def test2():
@@ -45,7 +28,7 @@ def test2():
         WHERE EPOCH > '2024-04-01'
         """
     ).pl()
-    print(time.time() - t1)
+    print(f'DuckDB epoch constraint {time.time() - t1:.2f} sec')
 
     t1 = time.time()
     pl_res = (
@@ -53,7 +36,7 @@ def test2():
         .filter(pl.col('EPOCH') > datetime.datetime(2024, 4, 1))
         .collect()
     )
-    print(time.time() - t1)
+    print(f'Polars epoch constraint {time.time() - t1:.2f} sec')
 
 
 def test3():
@@ -65,7 +48,7 @@ def test3():
         AND NORAD_CAT_ID = 25544
         """
     ).pl()
-    print(time.time() - t1)
+    print(f'DuckDB two constraints, epoch first {time.time() - t1:.2f} sec')
 
     t1 = time.time()
     pl_res = (
@@ -74,7 +57,7 @@ def test3():
         .filter(pl.col('NORAD_CAT_ID') == 25544)
         .collect()
     )
-    print(time.time() - t1)
+    print(f'Polars two constraints, epoch first {time.time() - t1:.2f} sec')
 
 
 def test4():
@@ -86,7 +69,7 @@ def test4():
         AND EPOCH > '2024-04-01'
         """
     ).pl()
-    print(time.time() - t1)
+    print(f'DuckDB two constraints, epoch last {time.time() - t1:.2f} sec')
 
     t1 = time.time()
     df = (
@@ -95,10 +78,13 @@ def test4():
         .filter(pl.col('EPOCH') > datetime.datetime(2024, 4, 1))
         .collect()
     )
-    print(time.time() - t1)
+    print(f'Polars two constraints, epoch last {time.time() - t1:.2f} sec')
 
 
 test1()
+print()
 test2()
+print()
 test3()
+print()
 test4()

@@ -85,7 +85,6 @@ def _append_new_tles_to_df(tle_dir: str, save_path: str) -> None:
         duckdb.sql(
             f"""
         SELECT max(EPOCH) FROM {repr(save_path)}
-        WHERE EPOCH < '2024-07-05'
         """
         )
         .fetchone()[0]
@@ -101,16 +100,19 @@ def _append_new_tles_to_df(tle_dir: str, save_path: str) -> None:
         if d[1] > max_date:
             unused_files.append(f)
 
-    df = _build_df_from_files(unused_files)
+    if len(unused_files):
+        df = _build_df_from_files(unused_files)
 
-    duckdb.sql(f"""
-        CREATE TABLE all_tles AS SELECT * FROM {repr(save_path)};
-        INSERT INTO all_tles SELECT * FROM df;
-    """)
+        duckdb.sql(f"""
+            CREATE TABLE all_tles AS SELECT * FROM {repr(save_path)};
+            INSERT INTO all_tles SELECT * FROM df;
+        """)
 
-    _save_df_to_parquet(df_or_duckdb_table_name='all_tles', save_path=save_path)
+        _save_df_to_parquet(df_or_duckdb_table_name='all_tles', save_path=save_path)
 
-    print(f'Appended {df.height} TLEs to the master database!')
+        print(f'Appended {df.height} TLEs to the master database!')
+    else:
+        print("No new TLEs to append to the master database")
 
 
 def _save_df_to_parquet(
