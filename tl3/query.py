@@ -157,13 +157,13 @@ def _load_secrets():
     if os.path.exists(os.environ['TL3_SECRETS_CACHE']):
         load_dotenv(os.environ['TL3_SECRETS_CACHE'])
     else:
-        username = input('Space-Track username: ')
-        password = input('Space-Track password: ')
-
         success = False
 
         while not success:
             try:
+                username = input('Space-Track username: ')
+                password = input('Space-Track password: ')
+
                 st = _get_spacetrack_client(username, password)
                 st.tle_latest(norad_cat_id=25544, ordinal=1, format='tle')
                 success = True
