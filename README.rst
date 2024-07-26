@@ -41,6 +41,7 @@ Once the parquet file is built, you can query TLEs between two dates for a singl
 
 .. code-block:: python
 
+    import datetime
     tles = tl3.tles_between(datetime.datetime(2024, 1, 1), datetime.datetime(2024, 1, 2), norad_cat_id='all', return_as='tle')
 
 ::
@@ -59,8 +60,24 @@ Once the parquet file is built, you can query TLEs between two dates for a singl
     ['1 20962U 75100F   24000.99892985  .00000079  00000-0  00000-0 0  9996'
     '2 20962 004.5720 273.5430 0280690 054.9390 307.9080 01.01930308 12694']]
 
+You can query TLEs by COSPAR ID or NORAD ID:
 
-You can also run queries directly against the full dataset using ``duckdb``. For example, you can query the NORAD catalog IDs for all polar satellites in LEO with at least one TLE produced in 2024 with:
+.. code-block:: python
+
+    import datetime
+    import numpy as np
+
+    date_start, date_end = datetime.datetime(2024, 1, 1), datetime.datetime(2024, 1, 2)
+    df_cospar = tl3.tles_between(date_start, date_end, identifier='2020-035BA')
+    df_norad = tl3.tles_between(date_start, date_end, identifier=45705)
+
+    print(np.all(df_cospar.to_numpy() == df_norad.to_numpy()))
+
+:: 
+
+    True
+
+If your use-case is more complex, you can run arbitrary queries directly against the full dataset using ``duckdb``. For example, you can query the NORAD catalog IDs for all polar satellites in LEO with at least one TLE produced in 2024 with:
 
 .. code-block:: python
 
@@ -119,3 +136,33 @@ Or we could get the inclination and eccentricity history of the ISS:
     │ 2024-07-16 19:56:56.165 ┆ 51.636002 ┆ 0.001031 │
     │ 2024-07-16 20:17:12.377 ┆ 51.638    ┆ 0.001063 │
     └─────────────────────────┴───────────┴──────────┘
+
+For reference, the ``.parquet`` file contains the following columns:
+
+:: 
+
+    ┌──────────────┬─────────────────────────────────┐
+    │ Column       ┆ Type                            │
+    │ ---          ┆ ---                             │
+    │ str          ┆ object                          │
+    ╞══════════════╪═════════════════════════════════╡
+    │ NORAD_CAT_ID ┆ UInt32                          │
+    │ INTL_DES     ┆ String                          │
+    │ N_DOT        ┆ Float32                         │
+    │ N_DDOT       ┆ Float32                         │
+    │ B_STAR       ┆ Float32                         │
+    │ ELSET_NUM    ┆ UInt16                          │
+    │ CHECKSUM1    ┆ UInt8                           │
+    │ INC          ┆ Float32                         │
+    │ RAAN         ┆ Float32                         │
+    │ ECC          ┆ Float32                         │
+    │ AOP          ┆ Float32                         │
+    │ MA           ┆ Float32                         │
+    │ N            ┆ Float32                         │
+    │ REV_NUM      ┆ UInt16                          │
+    │ CHECKSUM2    ┆ UInt8                           │
+    │ COSPAR_ID    ┆ String                          │
+    │ EPOCH        ┆ Datetime(time_unit='us', time_… │
+    └──────────────┴─────────────────────────────────┘
+
+Notice that many floats have been compressed to ``float32`` to save storage space.

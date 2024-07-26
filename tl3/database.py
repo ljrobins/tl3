@@ -7,6 +7,7 @@ import numpy as np
 import duckdb
 from alive_progress import alive_bar
 from .query import get_tle_file_list, get_tle_file_list_as_dates
+import re
 
 DT_REF = datetime.datetime(1958, 1, 1, tzinfo=datetime.timezone.utc)
 
@@ -112,7 +113,7 @@ def _append_new_tles_to_df(tle_dir: str, save_path: str) -> None:
 
         print(f'Appended {df.height} TLEs to the master database!')
     else:
-        print("No new TLEs to append to the master database")
+        print('No new TLEs to append to the master database')
 
 
 def _save_df_to_parquet(
@@ -167,20 +168,20 @@ def build_parquet(
 
 
 def tles_between(
-    date_start: datetime.datetime,
-    date_end: datetime.datetime,
-    norad_cat_id: Union[int, str] = 'all',
+    date_start: Union[datetime.datetime, None],
+    date_end: Union[datetime.datetime, None],
+    identifier: Union[int, str] = 'all',
     cols: Union[List[str], str] = '*',
     return_as: str = 'polars',
 ) -> Union[pl.DataFrame, duckdb.duckdb.DuckDBPyRelation, np.ndarray]:
     """
 
-    :param date_start: Start datetime for the query, in UTC
-    :type date_start: datetime.datetime
-    :param date_end: End datetime for the query, in UTC
-    :type date_end: datetime.datetime
-    :param norad_cat_id: NORAD ID to query for (either a single int or "all"), defaults to 'all'
-    :type norad_cat_id: Union[int, str], optional
+    :param date_start: Start datetime for the query, in UTC. If ``None``, no start date constraint is added
+    :type date_start: Union[datetime.datetime, None]
+    :param date_end: End datetime for the query, in UTC. If ``None``, no end date constraint is added
+    :type date_end: Union[datetime.datetime, None]
+    :param identifier: NORAD ID or COSPAR ID to query for (either an int like 25544 for NORAD, a string like "1998-067A" for COSPAR, or "all" for every object), defaults to "all"
+    :type identifier: Union[int, str], optional
     :param cols: SQL-style selectors for column names. Either a list of strings (ex. ``["EPOCH", "INC"]``), or ``"*"`` for all columns, defaults to ``"*"``
     :type cols: Union[List[str], str], optional
     :param return_as: Format to return results as. "duck" returns the raw duckdb query result, "polars" returns a polars DataFrame, and "tle" returns a numpy string [nx2] array, defaults to "polars"
@@ -192,16 +193,50 @@ def tles_between(
         'tle',
         'duck',
     ], "return_as must be 'polars', 'duck', or 'tle'"
-    assert date_end > date_start, 'date_start must be before date_end'
-    norad_cat_id = str(norad_cat_id)
-    if norad_cat_id.lower() != 'all':
-        assert int(norad_cat_id) < 1e5, 'norad_cat_id must be < 100_000'
+    if date_end is not None and date_start is not None:
+        assert date_end > date_start, 'date_start must be before date_end'
 
-    idstr, fdstr = date_start.strftime('%Y-%m-%d'), date_end.strftime('%Y-%m-%d')
+    if not isinstance(identifier, (int, str)):
+        raise TypeError(
+            f'identifier must be of type int or str, got {type(identifier)}'
+        )
+
+    norad_cat_id = None
+    cospar_id = None
+
+    if identifier == 'all':
+        pass # we apply no constraint
+    elif isinstance(identifier, str):
+        # then we have a cospar ID
+        if not re.fullmatch(
+            r'\d{4}-\d{3}[A-Z]{1,3}', identifier
+        ):  # check for correct formatting
+            raise ValueError(
+                'COSPAR ID identifier must be of the form "1998-067A__" where the final two spaces are optional uppercase characters'
+            )
+        else:
+            cospar_id = identifier
+    elif isinstance(identifier, int):
+        norad_cat_id = identifier
+        assert int(norad_cat_id) < 1e5, 'NORAD ID must be less than 100000'
+    else:
+        raise ValueError(
+            f'Unable to parse identifier {repr(identifier)} as a NORAD or COSPAR ID'
+        )
+
     constraints = []
-    constraints.append(f'EPOCH BETWEEN {repr(idstr)} AND {repr(fdstr)}')
-    if norad_cat_id.lower() != 'all' and norad_cat_id.isdigit():
+
+    if date_start is not None:
+        idstr = date_start.strftime('%Y-%m-%d')
+        constraints.append(f'EPOCH >= {repr(idstr)}')
+    if date_end is not None:
+        fdstr = date_end.strftime('%Y-%m-%d')
+        constraints.append(f'EPOCH < {repr(fdstr)}')
+
+    if norad_cat_id is not None:
         constraints.append(f'NORAD_CAT_ID=={norad_cat_id}')
+    elif cospar_id is not None:
+        constraints.append(f'COSPAR_ID=={repr(cospar_id)}')
 
     db = os.path.join(os.environ['TL3_DIR'], 'processed', 'twoline.parquet')
 
@@ -351,6 +386,28 @@ def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
         .alias('REV_NUM'),
         pl.col('TLE_LINE2').str.slice(68, 1).cast(pl.UInt8).alias('CHECKSUM2'),
     )
+
+    df = df.filter(
+        pl.col('INTL_DES').str.len_chars() > 0
+    )  # get rid of invalud intl designators
+
+    df = df.with_columns(
+        pl.when(pl.col('EPOCH_YEAR') < 50)
+        .then(
+            '20'
+            + pl.col('INTL_DES').str.slice(0, 2)
+            + '-'
+            + pl.col('INTL_DES').str.slice(2)
+        )
+        .otherwise(
+            '19'
+            + pl.col('INTL_DES').str.slice(0, 2)
+            + '-'
+            + pl.col('INTL_DES').str.slice(2)
+        )
+        .alias('COSPAR_ID')
+    )
+
     df = df.with_columns(
         pl.when(pl.col('EPOCH_YEAR') > 50)
         .then(1900 + pl.col('EPOCH_YEAR'))

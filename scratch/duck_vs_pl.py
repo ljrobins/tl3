@@ -5,6 +5,7 @@ import datetime
 
 db_path = 'tl3/processed/twoline.parquet'
 
+
 def test1():
     t1 = time.time()
     duck_res = duckdb.sql(

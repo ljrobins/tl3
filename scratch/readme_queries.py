@@ -2,11 +2,14 @@ import tl3
 import duckdb
 import datetime
 
-tles = tl3.tles_between(datetime.datetime(2024, 1, 1), datetime.datetime(2024, 1, 2), norad_cat_id='all', return_as='tle')
+tles = tl3.tles_between(
+    datetime.datetime(2024, 1, 1),
+    datetime.datetime(2024, 1, 2),
+    norad_cat_id='all',
+    return_as='tle',
+)
 
 print(tles)
-
-end
 
 df = duckdb.sql(f"""
     SELECT DISTINCT NORAD_CAT_ID FROM {repr(tl3.DB_PATH)}
@@ -23,5 +26,3 @@ df = duckdb.sql(f"""
 """).pl()
 
 print(df)
-
-
