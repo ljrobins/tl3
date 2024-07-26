@@ -1,25 +1,26 @@
 import asyncio
-from asynciolimiter import Limiter
-import os
 import datetime
+import gzip
+import os
+import shutil
+import socket
+import ssl
+import time
+import urllib.request
+from itertools import pairwise
+
+import httpx
+from asynciolimiter import Limiter
+from dotenv import load_dotenv
 from spacetrack import SpaceTrackClient
 from spacetrack.base import AuthenticationError
-import time
-import socket
-import httpx
-from dotenv import load_dotenv
-from itertools import pairwise
-import ssl
-import shutil
-import gzip
-import urllib.request
 
 rate_limiter = Limiter(
     290 / 3600
 )  # < 300 requests / hour to not make space-track upset
 
 
-def _get_spacetrack_client(username=None, password=None) -> SpaceTrackClient:
+def get_spacetrack_client(username=None, password=None) -> SpaceTrackClient:
     return SpaceTrackClient(
         os.environ['SPACETRACK_USERNAME'] if username is None else username,
         os.environ['SPACETRACK_PASSWORD'] if password is None else password,
@@ -115,7 +116,7 @@ async def _request(
 
 
 async def _save_tles(dates: list[tuple[datetime.date, datetime.date]], **kwargs):
-    st = _get_spacetrack_client()
+    st = get_spacetrack_client()
 
     coros = []
     for s, e in dates:
@@ -164,7 +165,7 @@ def _load_secrets():
                 username = input('Space-Track username: ')
                 password = input('Space-Track password: ')
 
-                st = _get_spacetrack_client(username, password)
+                st = get_spacetrack_client(username, password)
                 st.tle_latest(norad_cat_id=25544, ordinal=1, format='tle')
                 success = True
             except (httpx.HTTPStatusError, AuthenticationError) as e:
@@ -362,3 +363,10 @@ def _save_file_from_url(url: str, directory: str, save_name: str = None):
         with open(file_path, 'wb') as f:
             f.write(file_content)
         shutil.move(file_path, file_path[:-3])
+
+
+def _pull_satcat() -> None:
+    st = get_spacetrack_client()
+    satcat = st.satcat()
+    df = pl.DataFrame(satcat)
+    df.write_parquet(os.environ['TL3_SATCAT_PATH'])

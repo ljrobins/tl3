@@ -1,9 +1,10 @@
 #  odd days?
 
 import datetime
-import tl3 as tm
-import urllib
 import time
+import urllib
+
+import tl3 as tm
 
 url = (
     lambda date: f'https://nasa-public-data.s3.amazonaws.com/iss-coords/{date.strftime("%Y-%m-%d")}/ISS_OEM/ISS.OEM_J2K_EPH.txt'

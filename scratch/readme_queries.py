@@ -1,6 +1,8 @@
-import tl3
-import duckdb
 import datetime
+
+import duckdb
+
+import tl3
 
 tles = tl3.tles_between(
     datetime.datetime(2024, 1, 1),

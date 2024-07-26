@@ -1,13 +1,15 @@
-import os
-import polars as pl
-import time
 import datetime
-from typing import Tuple, Union, List
-import numpy as np
-import duckdb
-from alive_progress import alive_bar
-from .query import get_tle_file_list, get_tle_file_list_as_dates
+import os
 import re
+import time
+from typing import List, Tuple, Union
+
+import duckdb
+import numpy as np
+import polars as pl
+from alive_progress import alive_bar
+
+from .query import get_tle_file_list, get_tle_file_list_as_dates
 
 DT_REF = datetime.datetime(1958, 1, 1, tzinfo=datetime.timezone.utc)
 
@@ -205,7 +207,7 @@ def tles_between(
     cospar_id = None
 
     if identifier == 'all':
-        pass # we apply no constraint
+        pass  # we apply no constraint
     elif isinstance(identifier, str):
         # then we have a cospar ID
         if not re.fullmatch(

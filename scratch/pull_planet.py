@@ -1,7 +1,8 @@
 import datetime
 import time
-import tl3 as tm
 import urllib
+
+import tl3 as tm
 
 save_dir = 'data_pl'
 url = (

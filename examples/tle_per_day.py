@@ -5,10 +5,10 @@ TLE Production Per Day
 Plotting the number of TLEs produced every day since 1958
 """
 
-import tl3
-
-import matplotlib.pyplot as plt
 import duckdb
+import matplotlib.pyplot as plt
+
+import tl3
 
 x = duckdb.sql(f"""
     SELECT EPOCH FROM {repr(tl3.DB_PATH)}

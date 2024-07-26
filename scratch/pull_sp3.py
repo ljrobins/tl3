@@ -1,13 +1,15 @@
 #  odd days?
 
 import datetime
-import tl3 as tm
-import urllib
-import time
-from bs4 import BeautifulSoup
-import urllib.request
-import os
 import gzip
+import os
+import time
+import urllib
+import urllib.request
+
+from bs4 import BeautifulSoup
+
+import tl3 as tm
 
 gps_epoch = datetime.datetime(1980, 1, 6, 1, 1)
 now_wk = 2157

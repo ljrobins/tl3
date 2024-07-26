@@ -345,7 +345,7 @@ document.write(`
 <span class="p">)</span>  <span class="c1"># &lt; 300 requests / hour to not make space-track upset</span>
 
 
-<span class="k">def</span> <span class="nf">_get_spacetrack_client</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SpaceTrackClient</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_spacetrack_client</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SpaceTrackClient</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">SpaceTrackClient</span><span class="p">(</span>
         <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SPACETRACK_USERNAME&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">username</span><span class="p">,</span>
         <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SPACETRACK_PASSWORD&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">password</span><span class="p">,</span>
@@ -441,7 +441,7 @@ document.write(`
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">_save_tles</span><span class="p">(</span><span class="n">dates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">st</span> <span class="o">=</span> <span class="n">_get_spacetrack_client</span><span class="p">()</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">get_spacetrack_client</span><span class="p">()</span>
 
     <span class="n">coros</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
@@ -493,7 +493,7 @@ document.write(`
 
         <span class="k">while</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">st</span> <span class="o">=</span> <span class="n">_get_spacetrack_client</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+                <span class="n">st</span> <span class="o">=</span> <span class="n">get_spacetrack_client</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
                 <span class="n">st</span><span class="o">.</span><span class="n">tle_latest</span><span class="p">(</span><span class="n">norad_cat_id</span><span class="o">=</span><span class="mi">25544</span><span class="p">,</span> <span class="n">ordinal</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;tle&#39;</span><span class="p">)</span>
                 <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">except</span> <span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">HTTPStatusError</span><span class="p">,</span> <span class="n">AuthenticationError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>

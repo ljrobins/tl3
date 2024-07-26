@@ -1,16 +1,17 @@
-import polars as pl
-from scipy.interpolate import (
-    Akima1DInterpolator,
-    PchipInterpolator,
-    interp1d,
-    BarycentricInterpolator,
-)
 import datetime
 import os
 import time
-import numpy as np
+
 import matplotlib.pyplot as plt
 import mirage as mr
+import numpy as np
+import polars as pl
+from scipy.interpolate import (
+    Akima1DInterpolator,
+    BarycentricInterpolator,
+    PchipInterpolator,
+    interp1d,
+)
 
 d1 = datetime.datetime(2024, 3, 3)
 d2 = datetime.datetime(2024, 3, 3, 12)

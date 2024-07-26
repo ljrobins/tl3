@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-from datetime import date
-import sys
 import os
+import sys
+from datetime import date
 
 project = 'tl3'
 copyright = f'2024-{date.today().year}, Liam Robinson'

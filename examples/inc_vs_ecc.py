@@ -4,13 +4,13 @@ Inclination vs Eccentricity
 """
 
 import colorcet as cc
+import duckdb
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
-from fast_histogram import histogram2d
 import numpy as np
-import tl3
-import duckdb
+from fast_histogram import histogram2d
 
+import tl3
 
 x = (
     duckdb.sql(f"""

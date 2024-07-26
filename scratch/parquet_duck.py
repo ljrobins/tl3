@@ -1,7 +1,9 @@
-import duckdb
-import time
-import tl3 as tm
 import datetime
+import time
+
+import duckdb
+
+import tl3 as tm
 
 # dummy for warm start
 x = tm.tles_between(

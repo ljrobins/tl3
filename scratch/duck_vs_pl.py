@@ -1,7 +1,8 @@
+import datetime
+import time
+
 import duckdb
 import polars as pl
-import time
-import datetime
 
 db_path = 'tl3/processed/twoline.parquet'
 

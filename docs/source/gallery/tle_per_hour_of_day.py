@@ -5,11 +5,11 @@ TLE Production Per Hour of the Day
 Daily TLE production in UTC
 """
 
-import tl3
 import duckdb
-
 import matplotlib.pyplot as plt
 import polars as pl
+
+import tl3
 
 df = duckdb.sql(f"""
     SELECT EPOCH FROM {repr(tl3.DB_PATH)}

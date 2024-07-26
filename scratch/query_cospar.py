@@ -1,10 +1,20 @@
-import tl3
 import datetime
-import polars as pl
-import numpy as np
 
-df_cospar = tl3.tles_between(date_start=datetime.datetime(2024, 1, 1), date_end=datetime.datetime(2024, 1, 2), identifier='2020-035BA')
-df_norad = tl3.tles_between(date_start=datetime.datetime(2024, 1, 1), date_end=datetime.datetime(2024, 1, 2), identifier=45705)
+import numpy as np
+import polars as pl
+
+import tl3
+
+df_cospar = tl3.tles_between(
+    date_start=datetime.datetime(2024, 1, 1),
+    date_end=datetime.datetime(2024, 1, 2),
+    identifier='2020-035BA',
+)
+df_norad = tl3.tles_between(
+    date_start=datetime.datetime(2024, 1, 1),
+    date_end=datetime.datetime(2024, 1, 2),
+    identifier=45705,
+)
 
 print(np.all(df_cospar.to_numpy() == df_norad.to_numpy()))
 

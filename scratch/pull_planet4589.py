@@ -1,6 +1,8 @@
-from bs4 import BeautifulSoup
-import urllib.request
 import os
+import urllib.request
+
+from bs4 import BeautifulSoup
+
 import tl3 as tm
 
 url = 'https://planet4589.org/space/elements/'

@@ -1,7 +1,8 @@
-import duckdb
-import polars as pl
-import numpy as np
 import datetime
+
+import duckdb
+import numpy as np
+import polars as pl
 
 target_quantity_per_request = 1.5e5
 
