@@ -10,6 +10,7 @@ import urllib.request
 from itertools import pairwise
 
 import httpx
+import polars as pl
 from asynciolimiter import Limiter
 from dotenv import load_dotenv
 from spacetrack import SpaceTrackClient

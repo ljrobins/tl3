@@ -431,7 +431,7 @@ def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
 
     if height_before_drops - df.height > 0:
         print(
-            f'{fpath}: failed to parse {height_before_drops-df.height} rows (out of {height_before_drops})'
+            f'{os.path.split(fpath)[1]}: failed to parse {height_before_drops-df.height} rows (out of {height_before_drops})'
         )
 
     df = df.sort(['EPOCH', 'NORAD_CAT_ID'])

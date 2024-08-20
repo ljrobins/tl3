@@ -7,7 +7,6 @@ import tl3
 tles = tl3.tles_between(
     datetime.datetime(2024, 1, 1),
     datetime.datetime(2024, 1, 2),
-    norad_cat_id='all',
     return_as='tle',
 )
 

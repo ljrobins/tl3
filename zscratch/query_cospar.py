@@ -1,7 +1,6 @@
 import datetime
 
 import numpy as np
-import polars as pl
 
 import tl3
 
@@ -17,8 +16,6 @@ df_norad = tl3.tles_between(
 )
 
 print(np.all(df_cospar.to_numpy() == df_norad.to_numpy()))
-
-endd
 
 # tl3.build_parquet(from_scratch=True)
 

@@ -33,8 +33,10 @@ idna==3.7
 logbook==1.7.0.post0
     # via spacetrack
 numpy==2.0.1
-    # via pyarrow
-polars==1.1.0
+    # via
+    #   tl3 (pyproject.toml)
+    #   pyarrow
+polars==1.5.0
     # via tl3 (pyproject.toml)
 pyarrow==17.0.0
     # via tl3 (pyproject.toml)

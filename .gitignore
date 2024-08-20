@@ -17,3 +17,4 @@ tl3/txt
 .DS_Store
 dist
 .venv
+*.json

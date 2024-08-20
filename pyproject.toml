@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tl3"
-version = "0.0.10"
+version = "0.0.11"
 description = "Two-line element (TLE) management with a focus on downloading and operating on every TLE ever published by Space-Track"
 authors = ["Liam Robinson <robin502@purdue.edu>"]
 readme = "README.rst"
@@ -22,11 +22,12 @@ python = ">=3.9"
 python-dotenv = ">=0.0.1"
 asynciolimiter = ">=0.0.1"
 spacetrack = ">=0.0.1"
-polars = ">=0.0.1"
 httpx = ">=0.0.1"
+polars = "1.5.0"
 duckdb = ">=0.0.1"
 pyarrow = ">=0.0.1"
 alive-progress = ">0.0.1"
+numpy = ">0.0.1"
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/ljrobins/mirage"
@@ -50,11 +51,8 @@ unfixable = ["B"]
 # 4. Ignore `E402` (import violations) in all `__init__.py` files, and in select subdirectories.
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F403"]
-"scratch/*" = [
+"zscratch/*" = [
     "F841" # allows assigned but never used in tests
-    ]
-"mirage/lighting.py" = [
-    "E741" # allows short variable names like L O N
     ]
 
 [tool.ruff.format]

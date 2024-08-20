@@ -1,7 +1,8 @@
+import os
+
 import polars as pl
 
 from .query import _pull_satcat
-import os
 
 
 def load_satcat() -> pl.DataFrame:

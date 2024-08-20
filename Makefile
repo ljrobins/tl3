@@ -1,4 +1,4 @@
-.PHONY: all docs init build venv tle exec black pypi sphinx isort synthetic
+.PHONY: all docs init build venv tle exec black pypi sphinx isort test format
 
 sphinx:
 	cd docs && sphinx-apidoc -o ./source ../tl3 -f && make html
@@ -8,6 +8,13 @@ venv:
 	. bin/activate
 	pip3 install -r config/requirements.txt
 
+test:
+	pytest zscratch/tests.py
+
+format:
+	isort .
+	ruff check --fix
+	ruff format
 
 rm-docs:
 	rm -rf docs/source/gallery
