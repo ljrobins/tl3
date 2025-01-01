@@ -394,7 +394,7 @@ def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
     )  # get rid of invalud intl designators
 
     df = df.with_columns(
-        pl.when(pl.col('EPOCH_YEAR') < 50)
+        pl.when(pl.col('INTL_DES').str.slice(0,2).cast(pl.UInt16) < 50)
         .then(
             '20'
             + pl.col('INTL_DES').str.slice(0, 2)
