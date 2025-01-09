@@ -50,7 +50,7 @@ def _tle_to_l2(tle) -> str:
     return l2_
 
 
-def _df_row_to_tle(tle) -> Tuple[str, str]:
+def df_row_to_tle(tle) -> Tuple[str, str]:
     l1_ = _tle_to_l1(tle)
     l2_ = _tle_to_l2(tle)
     return (l1_, l2_)
@@ -264,7 +264,7 @@ def tles_between(
         l1s = np.zeros(x.height, dtype='<U69')
         l2s = np.zeros(x.height, dtype='<U69')
         for i, row in enumerate(x.iter_rows(named=True)):
-            l1s[i], l2s[i] = _df_row_to_tle(row)
+            l1s[i], l2s[i] = df_row_to_tle(row)
         return np.vstack((l1s, l2s)).T
     else:
         return x
@@ -394,7 +394,7 @@ def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
     )  # get rid of invalud intl designators
 
     df = df.with_columns(
-        pl.when(pl.col('INTL_DES').str.slice(0,2).cast(pl.UInt16) < 50)
+        pl.when(pl.col('INTL_DES').str.slice(0, 2).cast(pl.UInt16) < 50)
         .then(
             '20'
             + pl.col('INTL_DES').str.slice(0, 2)
@@ -419,11 +419,16 @@ def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
     df = df.with_columns(
         pl.from_epoch(
             pl.datetime(
-                year=pl.col('EPOCH_YEAR'), month=1, day=1, time_unit='ms'
+                year=pl.col('EPOCH_YEAR'),
+                month=1,
+                day=1,
+                time_unit='ms',
             ).dt.epoch('ms')
             + pl.col('EPOCH_DAY') * 86400 * 1e3,
             time_unit='ms',
-        ).alias('EPOCH')
+        )
+        .dt.replace_time_zone('UTC')
+        .alias('EPOCH')
     ).drop('EPOCH_DAY', 'EPOCH_YEAR')
 
     height_before_drops = df.height
