@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tl3"
-version = "0.0.12"
+version = "0.0.13"
 description = "Two-line element (TLE) management with a focus on downloading and operating on every TLE ever published by Space-Track"
 authors = ["Liam Robinson <robin502@purdue.edu>"]
 readme = "README.rst"
@@ -23,7 +23,7 @@ python-dotenv = ">=0.0.1"
 asynciolimiter = ">=0.0.1"
 spacetrack = ">=0.0.1"
 httpx = ">=0.0.1"
-polars = "1.5.0"
+polars = ">=1.5.0"
 duckdb = ">=0.0.1"
 pyarrow = ">=0.0.1"
 alive-progress = ">0.0.1"
