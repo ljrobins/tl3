@@ -50,13 +50,13 @@ def _tle_to_l2(tle) -> str:
     return l2_
 
 
-def _df_row_to_tle(tle) -> Tuple[str, str]:
+def df_row_to_tle(tle) -> Tuple[str, str]:
     l1_ = _tle_to_l1(tle)
     l2_ = _tle_to_l2(tle)
     return (l1_, l2_)
 
 
-def _build_df_from_files(file_paths: list[str]) -> pl.DataFrame:
+def _build_df_from_files(file_paths: list[str], verbose: bool = False) -> pl.DataFrame:
     dfs = pl.DataFrame()
     with alive_bar() as bar:
         for f in file_paths:
@@ -69,16 +69,16 @@ def _build_df_from_files(file_paths: list[str]) -> pl.DataFrame:
             if 'TLE_LINE1' not in df:
                 continue
 
-            df = _process_df(f, df)
+            df = _process_df(f, df, verbose=verbose)
             df.shrink_to_fit(in_place=True)
             dfs.vstack(df, in_place=True)
             bar(df.height)
     return dfs
 
 
-def _build_df_from_scratch(tle_dir: str, save_path: str) -> None:
+def _build_df_from_scratch(tle_dir: str, save_path: str, verbose: bool = False) -> None:
     files = get_tle_file_list(tle_dir)
-    df = _build_df_from_files(files)
+    df = _build_df_from_files(files, verbose=verbose)
 
     _save_df_to_parquet(df, save_path)
 
@@ -143,7 +143,7 @@ def _save_df_to_parquet(
 
 
 def build_parquet(
-    tle_dir: str = None, parquet_dir: str = None, from_scratch: bool = False
+    tle_dir: str = None, parquet_dir: str = None, from_scratch: bool = False, verbose: bool = False
 ) -> None:
     """Builds and saves a parquet file from all the TLE files (ending in .txt) in the target directory
 
@@ -153,6 +153,8 @@ def build_parquet(
     :type parquet_dir: str, optional
     :param from_scratch: Whether to build the dataframe from scratch (necessary if the schema changes) or to append new TLEs, defaults to False
     :type from_scratch: bool, optional
+    :param verbose: Whether to print warnings as the TLE txt files are read, defaults to False
+    :type verbose: bool, optional
     :raises pl.exceptions.ComputeError: If an error occurs within polars while parsing the TLE file
     """
     tle_dir = os.environ['TL3_TXT_DIR'] if tle_dir is None else tle_dir
@@ -164,7 +166,7 @@ def build_parquet(
     )
 
     if from_scratch:
-        _build_df_from_scratch(tle_dir, save_path)
+        _build_df_from_scratch(tle_dir, save_path, verbose=verbose)
     else:
         _append_new_tles_to_df(tle_dir, save_path)
 
@@ -175,7 +177,7 @@ def tles_between(
     identifier: Union[int, str] = 'all',
     cols: Union[List[str], str] = '*',
     return_as: str = 'polars',
-) -> Union[pl.DataFrame, duckdb.duckdb.DuckDBPyRelation, np.ndarray]:
+) -> Union[pl.DataFrame, np.ndarray]:
     """
 
     :param date_start: Start datetime for the query, in UTC. If ``None``, no start date constraint is added
@@ -186,15 +188,14 @@ def tles_between(
     :type identifier: Union[int, str], optional
     :param cols: SQL-style selectors for column names. Either a list of strings (ex. ``["EPOCH", "INC"]``), or ``"*"`` for all columns, defaults to ``"*"``
     :type cols: Union[List[str], str], optional
-    :param return_as: Format to return results as. "duck" returns the raw duckdb query result, "polars" returns a polars DataFrame, and "tle" returns a numpy string [nx2] array, defaults to "polars"
+    :param return_as: Format to return results as. "polars" returns a polars DataFrame, and "tle" returns a numpy string [nx2] array, defaults to "polars"
     :type return_as: string, optional
     """
 
     assert return_as.lower() in [
         'polars',
         'tle',
-        'duck',
-    ], "return_as must be 'polars', 'duck', or 'tle'"
+    ], "return_as must be 'polars', or 'tle'"
     if date_end is not None and date_start is not None:
         assert date_end > date_start, 'date_start must be before date_end'
 
@@ -229,45 +230,36 @@ def tles_between(
     constraints = []
 
     if date_start is not None:
-        idstr = date_start.strftime('%Y-%m-%d')
-        constraints.append(f'EPOCH >= {repr(idstr)}')
+        constraints.append(pl.col('EPOCH') >= date_start)
     if date_end is not None:
-        fdstr = date_end.strftime('%Y-%m-%d')
-        constraints.append(f'EPOCH < {repr(fdstr)}')
+        constraints.append(pl.col('EPOCH') < date_end)
 
     if norad_cat_id is not None:
-        constraints.append(f'NORAD_CAT_ID=={norad_cat_id}')
+        constraints.append(pl.col('NORAD_CAT_ID') == norad_cat_id)
     elif cospar_id is not None:
-        constraints.append(f'COSPAR_ID=={repr(cospar_id)}')
+        constraints.append(pl.col('COSPAR_ID') == cospar_id)
 
     db = os.path.join(os.environ['TL3_DIR'], 'processed', 'twoline.parquet')
 
-    if isinstance(cols, list):
-        col_repr = ', '.join(cols)
-    elif isinstance(cols, str):
-        col_repr = cols
-    else:
-        raise NotImplementedError('cols must be of type list or str')
+    if isinstance(cols, str):
+        cols = [cols]
 
-    query_str = f"""
-        SELECT {col_repr}
-        FROM {repr(db)}
-        {'WHERE ' + ' AND '.join(constraints)}
-        ORDER BY EPOCH ASC;
-        """
-    x = duckdb.sql(query_str)
+    x = (pl.scan_parquet(db)
+        .filter(
+            *constraints
+        ).select(*cols)
+        .collect()
+    )
+
 
     if return_as.lower() == 'polars':
-        return x.pl()
+        return x
     elif return_as.lower() == 'tle':
-        x = x.pl()
         l1s = np.zeros(x.height, dtype='<U69')
         l2s = np.zeros(x.height, dtype='<U69')
         for i, row in enumerate(x.iter_rows(named=True)):
-            l1s[i], l2s[i] = _df_row_to_tle(row)
+            l1s[i], l2s[i] = df_row_to_tle(row)
         return np.vstack((l1s, l2s)).T
-    else:
-        return x
 
 
 def _l1_l2_df_from_tle_file(fpath: str) -> pl.DataFrame:
@@ -306,7 +298,7 @@ def _implied_decimal_to_float(s: pl.Series) -> pl.Expr:
     )
 
 
-def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
+def _process_df(fpath: str, df: pl.DataFrame, verbose: bool = False) -> pl.DataFrame:
     df = df.filter(
         (pl.col('TLE_LINE1').str.len_chars() == 69),
         (pl.col('TLE_LINE2').str.len_chars() == 69),
@@ -394,7 +386,7 @@ def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
     )  # get rid of invalud intl designators
 
     df = df.with_columns(
-        pl.when(pl.col('EPOCH_YEAR') < 50)
+        pl.when(pl.col('INTL_DES').str.slice(0, 2).cast(pl.UInt16) < 50)
         .then(
             '20'
             + pl.col('INTL_DES').str.slice(0, 2)
@@ -419,17 +411,22 @@ def _process_df(fpath: str, df: pl.DataFrame) -> pl.DataFrame:
     df = df.with_columns(
         pl.from_epoch(
             pl.datetime(
-                year=pl.col('EPOCH_YEAR'), month=1, day=1, time_unit='ms'
+                year=pl.col('EPOCH_YEAR'),
+                month=1,
+                day=1,
+                time_unit='ms',
             ).dt.epoch('ms')
             + pl.col('EPOCH_DAY') * 86400 * 1e3,
             time_unit='ms',
-        ).alias('EPOCH')
+        )
+        .dt.replace_time_zone('UTC')
+        .alias('EPOCH')
     ).drop('EPOCH_DAY', 'EPOCH_YEAR')
 
     height_before_drops = df.height
     df = df.drop('TLE_LINE1', 'TLE_LINE2', 'index').drop_nulls()
 
-    if height_before_drops - df.height > 0:
+    if height_before_drops - df.height > 0 and verbose:
         print(
             f'{os.path.split(fpath)[1]}: failed to parse {height_before_drops-df.height} rows (out of {height_before_drops})'
         )

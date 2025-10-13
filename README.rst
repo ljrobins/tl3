@@ -42,7 +42,7 @@ Once the parquet file is built, you can query TLEs between two dates for a singl
 .. code-block:: python
 
     import datetime
-    tles = tl3.tles_between(datetime.datetime(2024, 1, 1), datetime.datetime(2024, 1, 2), norad_cat_id='all', return_as='tle')
+    tles = tl3.tles_between(datetime.datetime(2024, 1, 1), datetime.datetime(2024, 1, 2), identifier='all', return_as='tle')
 
 ::
 
