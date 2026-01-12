@@ -8,5 +8,5 @@ parquet_dir = None
 # dates = tl3.load_query_dates()
 # tl3.save_tles(dates, save_dir=save_dir)
 # tl3.fill_tle_gaps()
-tl3.update_tle_cache(save_dir)
+# tl3.update_tle_cache(save_dir)
 tl3.build_parquet(save_dir, parquet_dir, from_scratch=True)

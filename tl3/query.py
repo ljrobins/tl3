@@ -17,7 +17,7 @@ from spacetrack import SpaceTrackClient
 from spacetrack.base import AuthenticationError
 
 rate_limiter = Limiter(
-    290 / 3600
+    1 / 3600
 )  # < 300 requests / hour to not make space-track upset
 
 
@@ -166,8 +166,7 @@ def _load_secrets():
                 username = input('Space-Track username: ')
                 password = input('Space-Track password: ')
 
-                st = get_spacetrack_client(username, password)
-                st.tle_latest(norad_cat_id=25544, ordinal=1, format='tle')
+                _ = get_spacetrack_client(username, password)
                 success = True
             except (httpx.HTTPStatusError, AuthenticationError) as e:
                 print(str(e))
