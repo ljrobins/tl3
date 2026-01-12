@@ -179,6 +179,7 @@ def _load_secrets():
             f.write(f'SPACETRACK_PASSWORD={password}\n')
 
         print(f"Space-Track credentials cached at {os.environ['TL3_SECRETS_CACHE']}")
+        load_dotenv(os.environ['TL3_SECRETS_CACHE'])
 
 
 def delete_credentials_cache():
